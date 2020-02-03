@@ -4,11 +4,11 @@
 #' process_counts_hash.
 #' @param sers A list of Seurat objects to align. The objects should be normalized with variable genes ID'd.
 #' @param meta_file Path to a metadata file containing all metadata by sample. Cell barcodes should be sample_name-XXXXXXXX and the metadata file should have sample_name as the first column.
-#' @param bpparam BiocParallel parameter to pass to fastMNN for multithreading. If null then the the registered MulticoreParam will be used.
+#' @param ref NULL or integer specifying which ser in the sers list to use as a reference. If NULL then all combinations will be calculated and the best integration pass selected.
 #' @return Integrated Seurat object with mnn components as pca reduction.
 #' @export
 #' 
-align_sers = function(sers, meta_file = 'metadata.csv', bpparam = NULL){
+align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL){
     genes = c()
     for(ser in sers){
 	

@@ -13,10 +13,6 @@
 #' @export
 
 run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL){
-
-    future::plan(future::multiprocess)
-    options(globals.future.maxSize = Inf)
-
     dir.create(out_dir)
 
     # Run DE on whole dataset based on the meta data

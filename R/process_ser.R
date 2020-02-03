@@ -11,8 +11,6 @@
 #' @param res           Resolution for clustering
 #' @param other_sets    A named list of gene sets to be used similar to %mt for 
 #'                      scoring and scaling. Names will appear in metadata.
-#' @param n_core        Number of cores to use. Consider lowering this if working
-#'                      with a large data set and running out of memory
 #' @param ref_ser       A processed reference Seurat object used to as reference
 #'                      for cell selection.
 #'
@@ -26,15 +24,8 @@
 #' @export
 
 process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE, 
-    g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL,
-    n_core = NULL){
+    g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL){
 
-    future::plan(future::multiprocess)
-    options(future.globals.maxSize = Inf)
-
-    if(!is.null(n_core)){
-        future::plan(future::multiprocess, workers = n_core)
-    }
     feat_sums = Matrix::rowSums(Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA') != 0)
     feat_keep = names(feat_sums)[which(feat_sums > ncol(ser)*.001)]
     ser = subset(ser, features = feat_keep)
