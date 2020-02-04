@@ -4,14 +4,14 @@
 \alias{align_sers}
 \title{Aligns a list of ser objects}
 \usage{
-align_sers(sers, meta_file = "metadata.csv", bpparam = NULL)
+align_sers(sers, meta_file = "metadata.csv", ref = NULL)
 }
 \arguments{
 \item{sers}{A list of Seurat objects to align. The objects should be normalized with variable genes ID'd.}
 
 \item{meta_file}{Path to a metadata file containing all metadata by sample. Cell barcodes should be sample_name-XXXXXXXX and the metadata file should have sample_name as the first column.}
 
-\item{bpparam}{BiocParallel parameter to pass to fastMNN for multithreading. If null then the the registered MulticoreParam will be used.}
+\item{ref}{NULL or integer specifying which ser in the sers list to use as a reference. If NULL then all combinations will be calculated and the best integration pass selected.}
 }
 \value{
 Integrated Seurat object with mnn components as pca reduction.

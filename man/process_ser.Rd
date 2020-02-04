@@ -13,7 +13,7 @@ process_ser(
   s_genes = NULL,
   res = 0.8,
   other_sets = NULL,
-  n_core = NULL
+  ref_ser = NULL
 )
 }
 \arguments{
@@ -34,9 +34,6 @@ cell cycle scoring and scaling will not be done.}
 
 \item{other_sets}{A named list of gene sets to be used similar to %mt for 
 scoring and scaling. Names will appear in metadata.}
-
-\item{n_core}{Number of cores to use. Consider lowering this if working
-with a large data set and running out of memory}
 
 \item{ref_ser}{A processed reference Seurat object used to as reference
                      for cell selection.
