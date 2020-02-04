@@ -24,7 +24,7 @@
 #' @export
 
 process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE, 
-    g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL){
+    g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL, ref_ser = NULL){
 
     feat_sums = Matrix::rowSums(Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA') != 0)
     feat_keep = names(feat_sums)[which(feat_sums > ncol(ser)*.001)]
