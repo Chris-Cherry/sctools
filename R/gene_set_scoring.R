@@ -37,6 +37,7 @@ gene_set_scoring <- function(ser, geneset){
     neg_gene_pos_score[which(neg_gene_subset < 0)] = 0
     scores = abs(colSums(neg_gene_neg_score))+abs(colSums(pos_gene_pos_score))-abs(colSums(neg_gene_pos_score))-abs(colSums(pos_gene_neg_score))
     names(scores) = colnames(ser)
+    scores = scores/length(gene_list[['all']])
     return(scores)
 }
 
