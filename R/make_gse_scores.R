@@ -1,6 +1,5 @@
 #' Parameters:
 #' @param directory     Directory to get gmt file
-#' @param out_dir       Output directory
 #' @param subset_gse    User defined subset of gene set (Optional) 
 #' @param ser           Seurat object to process
 #' @param csv_dir       Directory to get csv file (Optional)
@@ -8,17 +7,18 @@
 #' @param from_gene     "ENSG" or "ENSMUSG" or "HGNC" or "MGI"             
 #' @param to_gene       "MGI" or HGNC
 #' 
-#' This function will read in the genesets, either default or customized by users
-#' and make feature plots from those genesets
+#' This function will read in the gene sets from an existing list, gmt file, 
+#' or csv file and score cells based on scaled gene expression. The results 
+#' will be appended to the set_scores assay in the provided Seurat object or 
+#' the assay will be created.
 #' 
 #' @import dplyr
 #' @importFrom dplyr %>%
 #' @return  Outputs seurat object
 #' @export
 
-make_gse_scores <- function(ser, directory = NULL, out_dir = '3_gse', 
-    from_gene = 'HGNC', to_gene = 'MGI', subset_gse = NULL, csv_dir = NULL, 
-    type = 'Real'){
+make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC', 
+    to_gene = 'MGI', subset_gse = NULL, csv_dir = NULL, type = 'Real'){
     
     dir.create(out_dir)
     gse = list()
