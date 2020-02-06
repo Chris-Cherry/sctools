@@ -2,7 +2,7 @@
 % Please edit documentation in R/pseudotime_plot.R
 \name{pseudotime_plot}
 \alias{pseudotime_plot}
-\title{Parameters:}
+\title{Creates pusedotime}
 \usage{
 pseudotime_plot(
   ser,
@@ -31,5 +31,5 @@ pseudotime_plot(
 \item{reduction}{Reduction method}
 }
 \description{
-Parameters:
+Creates pusedotime
 }

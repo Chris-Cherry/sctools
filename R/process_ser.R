@@ -1,26 +1,19 @@
 #' Processes counts into a Seurat object prepared for alignment.
-#' Parameters:
-#' @param ser           Seurat object to process.
-#' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If 
-#'                      left blank mt gene % will not be used to scale.
-#' @param scale_umi     Whether or not to scale on total UMI count
-#' @param g2m_genes     Genes to use for g2m scoring and scaling. If left blank
-#'                      cell cycle scoring and scaling will not be done.
-#' @param s_genes       Genes to use for s scoring and scaling. If left blank
-#'                      cell cycle scoring and scaling will not be done.
-#' @param res           Resolution for clustering
-#' @param other_sets    A named list of gene sets to be used similar to %mt for 
-#'                      scoring and scaling. Names will appear in metadata.
-#' @param ref_ser       A processed reference Seurat object used to as reference
-#'                      for cell selection.
 #'
-#' 
 #' Reads in a blank ser object (usually from align_sers.R) and processes
 #' with a traditional Seurat pipeline. By default will scale both RNA and
 #' the default assay if not RNA but will perform PCA on default assay.
-#' 
+#'
+#' @param ser Seurat object to process.
+#' @param mt_handle Regex used to identify mitochondrial genes for scaling. If left blank mitochondrial gene percentages will not be used to scale.
+#' @param scale_umi Whether or not to scale on total UMI count
+#' @param g2m_genes Genes to use for g2m scoring and scaling. If left blankcell cycle scoring and scaling will not be done.
+#' @param s_genes Genes to use for s scoring and scaling. If left blankcell cycle scoring and scaling will not be done.
+#' @param res Resolution for clustering
+#' @param other_sets A named list of gene sets to be used for scoring as percentage of counts and subsequent scaling. Names will appear in metadata.
+#' @param ref_ser A processed reference Seurat object used to as reference for cell selection.
+#' @return Outputs a processed Seurat outputs (PCA, UMAP, Phate) 
 #' @import Seurat
-#' @return  Outputs a processed Seurat outputs (PCA, UMAP, Phate) 
 #' @export
 
 process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE, 
