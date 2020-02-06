@@ -9,8 +9,7 @@ gene_set_scoring(ser, geneset)
 \arguments{
 \item{ser}{A Seurat object to be scored by the gene set. Must contain scaled data}
 
-\item{geneset}{A list of genes and their fold changes. Should be organized such that "genes" are genes and 
-"FC" is (log)foldchange. All genes will be assumed to be significant.}
+\item{geneset}{A list of genes and their fold changes. Should be organized such that "genes" are genes and "FC" is (log)foldchange. All genes will be assumed to be significant.}
 }
 \value{
 Outputs a vector of score values named as cell names

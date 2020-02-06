@@ -1,17 +1,15 @@
-#' Creates stats and pie plots related to percentage of cluster from a
-#' certain peice of metadata.
-#' Parameters:
-#' @param ser           Seurat object with clusters and given metadata
-#' @param meta          Name of metadata in ser object to get cluster proportions
-#' @param csv           Name of output csv to save cell numbers by cluster/meta
-#' @param pdf           Name of output pdf file
-#'
+#' Creates cluster proportions and plots from metadata.
 #' Creates a pdf of pie charts (one for each cluster with proportions from 
 #' the given metadata) and a csv of raw cell numbers by cluster and metadata.
 #' It also uses a permutation based test to determine statistical enrichment
 #' of clusters by the given metadata. The stats are returned in the subtitles
 #' of the pie charts.
+#' @param ser           Seurat object with clusters and given metadata
+#' @param meta          Name of metadata in ser object to get cluster proportions
+#' @param csv           Name of output csv to save cell numbers by cluster/meta
+#' @param pdf           Name of output pdf file
 #' @import grDevices
+#'
 
 clust_proportions = function(ser, meta, pdf, csv){
 

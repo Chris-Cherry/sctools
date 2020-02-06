@@ -1,4 +1,4 @@
-#' Parameters:
+#' Creates pusedotime
 #' 
 #' @param ser           Seurat object to process
 #' @param out_dir       Output directory

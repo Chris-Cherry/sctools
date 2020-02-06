@@ -2,9 +2,12 @@
 % Please edit documentation in R/clust_proportions.R
 \name{clust_proportions}
 \alias{clust_proportions}
-\title{Creates stats and pie plots related to percentage of cluster from a
-certain peice of metadata.
-Parameters:}
+\title{Creates cluster proportions and plots from metadata.
+Creates a pdf of pie charts (one for each cluster with proportions from 
+the given metadata) and a csv of raw cell numbers by cluster and metadata.
+It also uses a permutation based test to determine statistical enrichment
+of clusters by the given metadata. The stats are returned in the subtitles
+of the pie charts.}
 \usage{
 clust_proportions(ser, meta, pdf, csv)
 }
@@ -13,18 +16,15 @@ clust_proportions(ser, meta, pdf, csv)
 
 \item{meta}{Name of metadata in ser object to get cluster proportions}
 
-\item{pdf}{Name of output pdf file
-
-Creates a pdf of pie charts (one for each cluster with proportions from 
-the given metadata) and a csv of raw cell numbers by cluster and metadata.
-It also uses a permutation based test to determine statistical enrichment
-of clusters by the given metadata. The stats are returned in the subtitles
-of the pie charts.}
+\item{pdf}{Name of output pdf file}
 
 \item{csv}{Name of output csv to save cell numbers by cluster/meta}
 }
 \description{
-Creates stats and pie plots related to percentage of cluster from a
-certain peice of metadata.
-Parameters:
+Creates cluster proportions and plots from metadata.
+Creates a pdf of pie charts (one for each cluster with proportions from 
+the given metadata) and a csv of raw cell numbers by cluster and metadata.
+It also uses a permutation based test to determine statistical enrichment
+of clusters by the given metadata. The stats are returned in the subtitles
+of the pie charts.
 }

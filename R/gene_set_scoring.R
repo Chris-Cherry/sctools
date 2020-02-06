@@ -4,8 +4,7 @@
 #' cells are expressing genes in the set.
 #'
 #' Parameters:
-#' @param geneset   A list of genes and their fold changes. Should be organized such that "genes" are genes and 
-#'                  "FC" is (log)foldchange. All genes will be assumed to be significant.
+#' @param geneset   A list of genes and their fold changes. Should be organized such that "genes" are genes and "FC" is (log)foldchange. All genes will be assumed to be significant.
 #' @param ser       A Seurat object to be scored by the gene set. Must contain scaled data
 #' @return          Outputs a vector of score values named as cell names
 #' @export
