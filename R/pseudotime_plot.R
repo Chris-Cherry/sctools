@@ -1,4 +1,4 @@
-#' Creates pusedotime
+#' Creates pseudotime
 #' 
 #' @param ser           Seurat object to process
 #' @param out_dir       Output directory
