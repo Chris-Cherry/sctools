@@ -1,4 +1,4 @@
-#' Parameters:
+#' Makes gene set enrichment scores by cell
 #' @param directory     Directory to get gmt file
 #' @param subset_gse    User defined subset of gene set (Optional) 
 #' @param ser           Seurat object to process
@@ -20,7 +20,6 @@
 make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC', 
     to_gene = 'MGI', subset_gse = NULL, csv_dir = NULL, type = 'Real'){
     
-    dir.create(out_dir)
     gse = list()
     # Read in gene sets
     if (!is.null(subset_gse)){
