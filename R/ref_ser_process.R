@@ -51,25 +51,43 @@ ref_ser_process <- function(ser, res = .8, ref_ser = NULL){
     # IMPLEMENT METHOD FOR LIST OF OTHER GENE SETS
     ############################################################################
 
+    sce <- as.SingleCellExperiment(ser)
+    sce <- computeSumFactors(sce)
+    sce <- normalize(sce)
+
+    rescale <- multiBatchNorm(sce, batch = sce@colData@listData$Origin)
+        
+    mnn_out <- fastMNN(rescale, batch = sce@colData@listData$Origin, subset.row = rownames(ser), 
+        k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
+
+    reducedDim(sce, "mnn") <- reducedDim(mnn_out, "corrected")
+
+    ser = as.Seurat(sce)
+
+    ser = FindNeighbors(ser, reduction = reduction, verbose = FALSE)
+    ser = FindClusters(ser, resolution = res, verbose = FALSE)
+    ser = RunUMAP(ser, reduction = reduction, dims = 1:50, verbose = FALSE)
+    phate = phateR::phate(ser@reductions$mnn@cell.embeddings, seed = 42, n.jobs = -1, 
+        verbose = FALSE)
+
+    ser[['phate']] = CreateDimReducObject(phate$embedding, key = 'PHATE_',
+        assay = DefaultAssay(ser))
+
+    # Generate 3d phate    
+    phate3d = phateR::phate(ser@reductions$mnn@cell.embeddings, ndim = 3, seed = 42, n.jobs = -1, 
+        verbose = FALSE)
+    ser[['phate3d']] = CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
+        assay = DefaultAssay(ser))
+
+    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+
     if(Seurat::DefaultAssay(ser) != 'RNA'){
         ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, assay = 'RNA', 
             verbose = FALSE, features = rownames(ser))
     }
-    ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
-    ser = Seurat::RunPCA(ser, npcs = 50, verbose = FALSE)
-    ser = Seurat::FindNeighbors(ser, verbose = FALSE)
-    ser = Seurat::FindClusters(ser, resolution = res, verbose = FALSE)
-    ser = Seurat::RunUMAP(ser, dims = 1:50, verbose = FALSE)
-    phate = phateR::phate(ser@reductions$pca@cell.embeddings, seed = 42, n.jobs = -1, 
-        verbose = FALSE)
-    ser[['phate']] = Seurat::CreateDimReducObject(phate$embedding, key = 'PHATE_',
-        assay = Seurat::DefaultAssay(ser))
-
-    # Generate 3d phate    
-    phate3d = phateR::phate(ser@reductions$pca@cell.embeddings, ndim = 3, seed = 42, n.jobs = -1, 
-        verbose = FALSE)
-    ser[['phate3d']] = Seurat::CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
-        assay = Seurat::DefaultAssay(ser))
+    else{
+        ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+    }
 
     return(ser)
 }
