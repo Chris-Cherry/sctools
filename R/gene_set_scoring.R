@@ -13,9 +13,9 @@ gene_set_scoring <- function(ser, geneset){
 
     # Separate genes into positive and negative changes    
     gene_list = list()
-    gene_list[["all"]] = geneset$gene
-    gene_list[["positive"]] = geneset$gene[which(geneset$FC>0)]
-    gene_list[["negative"]] = geneset$gene[which(geneset$FC<0)]
+    gene_list[["all"]] = geneset$genes
+    gene_list[["positive"]] = geneset$genes[which(geneset$FC>0)]
+    gene_list[["negative"]] = geneset$genes[which(geneset$FC<0)]
 
     # Calculate summed z-scores, taking into account directionality of fold change
     pos = gene_list[["positive"]]
