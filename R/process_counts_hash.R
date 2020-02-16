@@ -9,17 +9,23 @@
 #' @param hash_dir      Directory containing hash counts files
 #' @param hash_meta     csv file containing conversion of hash ID to sample name
 #' @param type          "DropSeq" or "10x"
+#' @param T_dir         Optional directory to T cell TCR
+#' @param B_dir         optional directory to B cell BCR
 #' 
 #' This script reads in a counts file from either the DropSeq or 10x 
 #' pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object 
-#'
+#' 
+#' @import Seurat
+#' @import Matrix
 #' @import methods
+#' @import plyr
 #' @import utils
+#' @import data.table
 #' @return Outputs a Seurat file prepared to rPCA anchoring
 #' @export
 
 process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL, 
-    hash_meta = NULL, sample_id = NULL, type = 'DropSeq'){
+    hash_meta = NULL, sample_id = NULL, type = 'DropSeq', T_dir = NULL, B_dir = NULL){
 
 
     if(type == 'DropSeq'){
@@ -29,13 +35,13 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
     }
     
     if(type == '10x'){
-        counts = Matrix::readMM(gzfile(paste0(directory, 
+        counts = readMM(gzfile(paste0(directory, 
             '/filtered_feature_bc_matrix/matrix.mtx.gz')))
         rows = read.table(gzfile(paste0(directory,
             '/filtered_feature_bc_matrix/features.tsv.gz')), 
             stringsAsFactors = FALSE)$V1
         rows = sapply(rows, function(x){
-            strsplit(x, '.', fixed = TRUE)[[1]][1]
+            strsplit(x, '-', fixed = TRUE)[[1]][1]
         })
         names(rows) = c()
         rownames(counts) = rows
@@ -54,7 +60,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
         colnames(counts) = paste(sample_id, colnames(counts), sep = '-')
     }
 
-    c_sum = Matrix::colSums(counts)
+    c_sum = colSums(counts)
     c_take = which(c_sum >= 500)
     counts = counts[,names(c_take)]
     counts = as(as.matrix(counts), "sparseMatrix")
@@ -69,37 +75,52 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
             counts = counts[-rm_id,]
             conv = conv[-rm_id,]
         }
+        
         dups = unique(conv[which(duplicated(conv[,2])),2])
         for(dup in dups){
             rows = which(conv[,2] == dup)
-            counts[rows[1],] = Matrix::colSums(counts[rows,])
+            counts[rows[1],] = colSums(counts[rows,])
             counts = counts[-rows[-1],]
             conv = conv[-rows[-1],]
         }
+        
         rownames(counts) = conv[,2]
     }
 
-    ser = Seurat::CreateSeuratObject(counts)
-
+    ser = CreateSeuratObject(counts)
+    
      if(!is.null(hash_dir) & !is.null(hash_meta)){
         if(type == 'DropSeq'){
         # IMPLEMENT DROPSEQ HASHING PROTOCOL
         } else if(type == '10x'){
-            counts = Matrix::readMM(gzfile(paste0(hash_dir, 
+            counts = readMM(gzfile(paste0(hash_dir, 
                 '/filtered_feature_bc_matrix/matrix.mtx.gz')))
-            rownames(counts) = read.table(gzfile(paste0(hash_dir,
-                '/filtered_feature_bc_matrix/features.tsv.gz')))$V1
-            colnames(counts) = read.table(gzfile(paste0(hash_dir,
-                '/filtered_feature_bc_matrix/barcodes.tsv.gz')))$V1
+            rows = read.table(gzfile(paste0(hash_dir,
+                '/filtered_feature_bc_matrix/features.tsv.gz')), 
+                stringsAsFactors = FALSE)$V1
+            rows = sapply(rows, function(x){
+                strsplit(x, '-', fixed = TRUE)[[1]][1]
+            })
+            names(rows) = c()
+            rownames(counts) = rows
+
+            cols = read.table(gzfile(paste0(hash_dir,
+                '/filtered_feature_bc_matrix/barcodes.tsv.gz')), 
+                stringsAsFactors = FALSE)$V1
+            cols = sapply(cols, function(x){
+                strsplit(x, '-', fixed = TRUE)[[1]][1]
+            })
+            names(cols) = c()
+            colnames(counts) = cols
         }
 
         cells = intersect(colnames(counts), colnames(ser))
         counts = counts[, cells]
         ser = subset(ser, cells = cells)
-        ser[['hash']] = Seurat::CreateAssayObject(counts)
+        ser[['hash']] = CreateAssayObject(counts)
 
-        ser = Seurat::NormalizeData(ser, assay = 'hash', normalization.method = 'CLR')
-        ser = Seurat::HTODemux(ser, assay = 'hash', positive.quantile = .99)
+        ser = NormalizeData(ser, assay = 'hash', normalization.method = 'CLR')
+        ser = HTODemux(ser, assay = 'hash', positive.quantile = .99)
         singlets = names(ser$hash_classification.global)[
             which(ser$hash_classification.global == 'Singlet')]
         ser = subset(ser, cells = singlets)
@@ -116,10 +137,19 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
                 strsplit(x, '-', fixed = TRUE)[[1]][1]
             })
             names(nn) = c()
-            ser = Seurat::RenameCells(ser, new.names = nn)
+            ser = RenameCells(ser, new.names = nn)
         }
 
-        ser = Seurat::RenameCells(ser, new.names = paste0(ser$Sample, '-', colnames(ser)))
+        ser = RenameCells(ser, new.names = paste0(ser$Sample, '-', colnames(ser)))
+    }
+    
+     # Matching T with TCR and BCR sequencing
+    if (!is.null(T_dir)){
+        ser = process_T(ser, T_dir)
+    }
+
+    if (!is.null(B_dir)){
+        ser = process_B(ser, B_dir)
     }
 
     return(ser)
