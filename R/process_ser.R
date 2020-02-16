@@ -13,21 +13,15 @@
 #'                      scoring and scaling. Names will appear in metadata.
 #' @param ref_ser       A processed reference Seurat object used to as reference
 #'                      for cell selection.
-#'
 #' 
 #' Reads in a blank ser object (usually from 2) and processes
 #' with a traditional Seurat pipeline. By default will scale both RNA and
 #' the default assay if not RNA but will perform PCA on default assay.
 #' 
 #' @import Seurat
-#' @import batchelor
-#' @import scran
 #' @import phateR
-#' @import rgl
-#' @import SingleCellExperiment
 #' @import Matrix
-#' @import scater
-#' @return Outputs a processed Seurat outputs (PCA, UMAP, Phate) 
+#' @return Outputs a processed Seurat outputs (UMAP, Phate) 
 #' @export
 
 process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE, 
@@ -64,22 +58,10 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
         scale_vars = c(scale_vars, 'nCount_RNA')
     }
 
-    sce <- as.SingleCellExperiment(ser)
-    sce <- computeSumFactors(sce)
-    sce <- normalize(sce)
-
-    rescale <- multiBatchNorm(sce, batch = sce@colData@listData$Origin)
-        
-    mnn_out <- fastMNN(rescale, batch = sce@colData@listData$Origin, subset.row = rownames(ser), 
-        k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
-
-    reducedDim(sce, "mnn") <- reducedDim(mnn_out, "corrected")
-
-    ser = as.Seurat(sce)
-
-    ser = FindNeighbors(ser, reduction = reduction, verbose = FALSE)
+    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+    ser = FindNeighbors(ser, reduction = "mnn", verbose = FALSE)
     ser = FindClusters(ser, resolution = res, verbose = FALSE)
-    ser = RunUMAP(ser, reduction = reduction, dims = 1:50, verbose = FALSE)
+    ser = RunUMAP(ser, reduction = "mnn", dims = 1:50, verbose = FALSE)
     phate = phateR::phate(ser@reductions$mnn@cell.embeddings, seed = 42, n.jobs = -1, 
         verbose = FALSE)
 
@@ -91,8 +73,6 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
         verbose = FALSE)
     ser[['phate3d']] = CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
         assay = DefaultAssay(ser))
-
-    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
 
     return(ser)
 }
