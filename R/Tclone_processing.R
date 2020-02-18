@@ -2,7 +2,6 @@
 #' 
 #' Parameters:
 #' @param ser           Seurat object containing T cell information
-#' @param T_mark        User input for T cell marker (Default Cd3e)
 #' @param out_dir       Output directory 
 #' 
 #' This script reads in a counts file from either the DropSeq or 10x 
@@ -17,7 +16,7 @@
 #' 
 #' @export
 
-Tclone_processing <- function(ser, T_mark = 'Cd3e', out_dir = "Cell/"){
+Tclone_processing <- function(ser, out_dir = "Cell/"){
     
     Tcell_mx = as.data.table(matrix('NA', ncol = 5, nrow = ncol(ser)))
     colnames(Tcell_mx) = c("Tcell", "a_Tchain", "a_Tseq", "b_Tchain", "b_Tseq")
