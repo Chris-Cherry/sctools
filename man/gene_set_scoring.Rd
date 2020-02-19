@@ -4,12 +4,14 @@
 \alias{gene_set_scoring}
 \title{Scores cell expression of genes in set}
 \usage{
-gene_set_scoring(ser, geneset)
+gene_set_scoring(ser, geneset, scaled = TRUE)
 }
 \arguments{
 \item{ser}{A Seurat object to be scored by the gene set. Must contain scaled data}
 
 \item{geneset}{A list of genes and their fold changes. Should be organized such that "genes" are genes and "FC" is (log)foldchange. All genes will be assumed to be significant.}
+
+\item{scaled}{Boolean to determine whether to scale score by the number of genes in the set}
 }
 \value{
 Outputs a vector of score values named as cell names

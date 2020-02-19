@@ -6,10 +6,11 @@
 #' Parameters:
 #' @param geneset   A list of genes and their fold changes. Should be organized such that "genes" are genes and "FC" is (log)foldchange. All genes will be assumed to be significant.
 #' @param ser       A Seurat object to be scored by the gene set. Must contain scaled data
+#' @param scaled    Boolean to determine whether to scale score by the number of genes in the set
 #' @return          Outputs a vector of score values named as cell names
 #' @export
 
-gene_set_scoring <- function(ser, geneset){
+gene_set_scoring <- function(ser, geneset, scaled = TRUE){
 
     # Separate genes into positive and negative changes    
     gene_list = list()
@@ -38,7 +39,7 @@ gene_set_scoring <- function(ser, geneset){
     neg_gene_pos_score[which(neg_gene_subset < 0)] = 0
     scores = abs(colSums(neg_gene_neg_score))+abs(colSums(pos_gene_pos_score))-abs(colSums(neg_gene_pos_score))-abs(colSums(pos_gene_neg_score))
     names(scores) = colnames(ser)
-    scores = scores/length(gene_list[['all']])
+    if (scaled) {scores = scores/length(gene_list[['all']])}
     return(scores)
 }
 
