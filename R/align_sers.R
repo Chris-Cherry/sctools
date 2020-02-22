@@ -5,7 +5,7 @@
 #' @param sers      A list of Seurat objects to align. The objects should be normalized with variable genes ID'd.
 #' @param meta_file Path to a metadata file containing all metadata by sample. Cell barcodes should be sample_name-XXXXXXXX and the metadata file should have sample_name as the first column.
 #' @param ref       NULL or integer specifying which ser in the sers list to use as a reference. If NULL then all combinations will be calculated and the best integration pass selected.
-#' @param origin    If only 1 seurat object is presented, user can define parameter to subset the seurat object
+#' @param origin    If only 1 seurat object is presented, user have to define parameter to subset the seurat object
 #' 
 #' @return Integrated Seurat object with mnn components as pca reduction.
 #' @import Seurat
@@ -29,7 +29,6 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sa
 
     genes = c()
     for(ser in sers){
-	
         genes = c(genes, rownames(ser@assays$RNA@counts))
     }
     genes = unique(genes)
