@@ -47,9 +47,8 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
         }
 
         names(rank) <- gse_sub$gene
-        rank <- rank %>% mutate(rank = rank(avg_logFC, ties.method = "random"))
         print("Starting geneset analysis")
-        fgseaResult = fgsea::fgsea(pathways = fgsea_pathway, stats = rank, nproc = 12, nperm = 10000)
+        fgseaResult = fgsea::fgsea(pathways = fgsea_pathway, stats = rank, nproc = 12, maxSize = 500, nperm = 10000)
     }
     else{
         print("Please input the correct inputs: either directory of RDS file or dataframe")
