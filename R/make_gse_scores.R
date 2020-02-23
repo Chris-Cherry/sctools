@@ -50,6 +50,8 @@ make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC',
     }
 
     # Score gene sets
+    dup = which(duplicated(gse))
+    gse = gse[-dup]
     set_scores = matrix(0, ncol = ncol(scale_data), nrow = length(gse))
     rownames(set_scores) = names(gse)
     colnames(set_scores) = colnames(scale_data) 
