@@ -47,7 +47,7 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
         }
 
         names(rank) <- gse_sub$gene
-        fgseaResult = fgsea::fgsea(pathways = fgsea_pathway, stats = rank, nperm = 10000)
+        fgseaResult = fgsea::fgsea(pathways = fgsea_pathway, stats = rank, nproc = 12, nperm = 10000)
     }
     else{
         print("Please input the correct inputs: either directory of RDS file or dataframe")
