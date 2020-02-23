@@ -16,7 +16,7 @@
 #' @export
 
 pseudotime_plot <- function(ser, out_dir = '4_pseudotime', cluster_start = NULL, cluster_end = NULL, 
-    cal_reduction = 'pca', plot_reduction = 'phate', group_by = NULL, lineage_ls = NULL){
+    cal_reduction = 'phate', plot_reduction = 'phate', group_by = NULL, lineage_ls = NULL){
     
     dir.create(out_dir)
 
