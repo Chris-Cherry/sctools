@@ -34,6 +34,7 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
             rank = gse_sub$avg_logFC
         }
 
+        
         fgsea_pathway = fgsea::gmtPathways(directory)
         for (i in 1:length(fgsea_pathway)){
             # Convert genes
@@ -47,7 +48,15 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
         }
 
         names(rank) <- gse_sub$gene
-        print("Starting geneset analysis")
+        
+        # Eliminate the Inf and -Inf in the rank
+        if(max(rank) == Inf || min(rank) == -Inf){
+            tmp = which(rank == Inf)
+            rank = rank[-tmp]
+            tmp = which(rank == -Inf)
+            rank = rank[-tmp]
+        }
+
         fgseaResult = fgsea::fgsea(pathways = fgsea_pathway, stats = rank, nproc = 12, maxSize = 500, nperm = 10000)
     }
     else{
