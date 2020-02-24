@@ -26,9 +26,7 @@ make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC',
         gse = c(gse, gene_sets)
     } 
     if (!is.null(directory)){
-        for(file in directory){
-            gse = c(gse, fgsea::gmtPathways(file))
-        }
+        gse = fgsea::gmtPathways(directory)
     } 
     if (!is.null(csv_dir)){
         table = read.table(csv_dir, sep = ',', header = TRUE, stringsAsFactors = FALSE)
@@ -50,8 +48,10 @@ make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC',
     }
 
     # Score gene sets
-    dup = which(duplicated(gse))
-    gse = gse[-dup]
+    if (length(which(duplicated(gse))) > 0){
+        dup = which(duplicated(gse))
+        gse = gse[-dup]
+    }
     set_scores = matrix(0, ncol = ncol(scale_data), nrow = length(gse))
     rownames(set_scores) = names(gse)
     colnames(set_scores) = colnames(scale_data) 
