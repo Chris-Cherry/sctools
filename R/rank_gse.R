@@ -34,7 +34,6 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
             rank = gse_sub$avg_logFC
         }
 
-        
         fgsea_pathway = fgsea::gmtPathways(directory)
         for (i in 1:length(fgsea_pathway)){
             # Convert genes
@@ -50,9 +49,11 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
         names(rank) <- gse_sub$gene
         
         # Eliminate the Inf and -Inf in the rank
-        if(max(rank) == Inf || min(rank) == -Inf){
+        if(max(rank) == Inf){
             tmp = which(rank == Inf)
             rank = rank[-tmp]
+        }
+         if(min(rank) == -Inf){
             tmp = which(rank == -Inf)
             rank = rank[-tmp]
         }
