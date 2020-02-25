@@ -20,13 +20,10 @@ process_loom <- function(file, ser, hashed = FALSE){
     })
     names(bcs) = c()
 
-    if(!hashed){
-        sample = strsplit(file, '.', fixed = TRUE)[[1]][1]
-        bcs = paste0(sample, '-', bcs)
-    }
-
+    # Fixing the unconventional column name
     tar_bcs = colnames(ser@assays$RNA@counts)
     names(tar_bcs) = tar_bcs
+
     if(hashed){
         tar_bcs = sapply(tar_bcs, function(x){
             strsplit(x, '-', fixed = TRUE)[[1]][2]
