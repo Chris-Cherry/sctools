@@ -14,8 +14,10 @@
 #' @param ... Parameters to pass to velocyto.R::show.velocity.on.embedding.cor
 #' @import Seurat
 #' 
+#' @return Return lists of objects containing information about rna velocity
 #' @export
 #'
+
 rnavel_plot <- function(loom, ser, out_file, dr = 'umap', cols = NULL, n_core = NULL, plot_info = NULL, ...){
     if(is.null(n_core)){
         n_core = future::availableCores()
