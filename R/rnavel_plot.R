@@ -12,17 +12,23 @@
 #' @param n_core Number of cores to use for velocyto.R functions. If NULL then future::availableCores will be used.
 #' @param plot_info If RNA velocity was run previously you can provide the output file to skip much of the processing time. This can be very helpful when tweaking plotting parameters.
 #' @param ... Parameters to pass to velocyto.R::show.velocity.on.embedding.cor
+#' @import Seurat
 #'
-rnavel_plot <- function(loom, ser, out_file, dr = 'phate', cols = NULL, n_core = NULL, plot_info = NULL, ...){
+rnavel_plot <- function(loom, ser, out_file, dr = 'umap', cols = NULL, n_core = NULL, plot_info = NULL, ...){
     if(is.null(n_core)){
         n_core = future::availableCores()
     }
+
+    ident_tmp = Idents(ser)
+    names(ident_tmp) = colnames(ser@assays$RNA@counts)
+
     if(is.null(cols)){
-        cols = ggplot_col_gen(length(levels(Seurat::Idents(ser))))
-        names(cols) = levels(Seurat::Idents(ser))
+        cols = ggplot_col_gen(length(levels(ident_tmp)))
+        names(cols) = levels(ident_tmp)
     }
-    cell.colors = cols[Seurat::Idents(ser)]
-    names(cell.colors) = names(Seurat::Idents(ser))
+
+    cell.colors = cols[ident_tmp]
+    names(cell.colors) = names(ident_tmp)
 
     if(is.null(plot_info)){
         tar_cells = intersect(colnames(loom$spliced), 
@@ -30,23 +36,26 @@ rnavel_plot <- function(loom, ser, out_file, dr = 'phate', cols = NULL, n_core =
         spliced_counts = loom$spliced[, tar_cells]
         unspliced_counts = loom$unspliced[, tar_cells]
 
-        idents = Seurat::Idents(ser)[tar_cells]
-        pcs = ser@reductions$pca@cell.embeddings[tar_cells,]
+        #idents = Seurat::Idents(ser)[tar_cells]
+        idents = ident_tmp[tar_cells] 
+
+        pcs = ser@reductions$mnn@cell.embeddings[tar_cells,]
         cell_dist <- as.dist(1-velocyto.R::armaCor(t(pcs)))
         emb = ser[[dr]]@cell.embeddings[tar_cells, 1:2]
 
         spliced = velocyto.R::filter.genes.by.cluster.expression(spliced_counts, 
             idents, min.max.cluster.average = 0.2)
+
         unspliced = velocyto.R::filter.genes.by.cluster.expression(
             unspliced_counts, idents, min.max.cluster.average = 0.05)
 
         vel_estimates = velocyto.R::gene.relative.velocity.estimates(spliced, 
             unspliced, n.cores = n_core, kCells = 40, 
-            fit.quantile = 0.01, cell.dist = cell_dist)
+            fit.quantile = 0.02, cell.dist = cell_dist)
 
         png(out_file, height = 1000, width = 1000)
-        plot_out = velocyto.R::show.velocity.on.embedding.cor(emb, vel_estimates, 
-            cell.colors = cell.colors, n.cores = n_core, return.details = TRUE, ...)
+        plot_out = velocyto.R::show.velocity.on.embedding.cor(emb, vel_estimates, n = 200,
+            cell.colors = cell.colors, n.cores = n_core, scale = 'log', return.details = TRUE, ...)
         dev.off()
 
         return(list(emb, vel_estimates, plot_out))
