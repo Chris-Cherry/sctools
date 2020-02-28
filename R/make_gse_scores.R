@@ -45,6 +45,13 @@ make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC',
             mid = na.omit(mid)
             gse[[set]] = gene_conv[mid, 1]
         }
+    } else {
+        for(set in names(gse)){
+            g = gse[[set]]
+            mid = match(g, rownames(scale_data))
+            mid = na.omit(mid)
+            gse[[set]] = rownames(scale_data)[mid]
+        }
     }
 
     # Score gene sets
