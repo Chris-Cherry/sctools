@@ -22,6 +22,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
     # Process each cluster
     if (!is.null(list_ser)){
         DefaultAssay(list_ser[[1]]) = 'RNA'
+        
         for (i in meta){
             out_dir = paste0('2_de/cluster_', i, '/')
             submarks = readRDS(paste0(out_dir, '/submarks_', i, '.RDS'))
@@ -30,7 +31,8 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
                 top_all = submarks[which(submarks$avg_logFC > 1),]
             else {
                 top_all = top10
-            }       
+            }
+            
             png(paste0(out_dir, '/heatmap_all_', i, '.png'), height = 2000, width = 2000)
             print(Seurat::DoHeatmap(list_ser[[i]], top_all$gene, assay = 'RNA', raster = FALSE, 
                 draw.lines = FALSE))
@@ -73,7 +75,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
         marks = readRDS(paste0(out_dir, '/marks.RDS'))
         top10 = marks %>% group_by(cluster) %>% top_n(10, avg_logFC)
         top_all = marks[which(marks$avg_logFC > 1),]
-        
+
         png(paste0(out_dir, '/heatmap_all.png'), height = 2000, width = 2000)
         print(Seurat::DoHeatmap(ser, top_all$gene, assay = 'RNA', raster = FALSE, 
             draw.lines = FALSE))

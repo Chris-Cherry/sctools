@@ -4,7 +4,7 @@
 #' @param feats         A subset of featurs to run DE (I.E. only surface markers)
 #'                      If NULL then will run on all genes
 #' @param out_dir       Directory to write plots and save markers.
-#' @param meta          (Optional) Pass in meta data that user wants to subset
+#' @param meta          (Optional) Pass in cluster name that user wants to run DE
 #' @param res           (Optional) Resolution for clustering in each subset
 #' @import grDevices
 #' @import Seurat
@@ -17,18 +17,13 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, res = .8){
     dir.create(out_dir)
 
     # Run DE on whole dataset based on the meta data
-
     if(is.null(feats)){feats = rownames(ser)}
-
     ser_list = list()
-
     # Run DE on each cluster
-
     if (!is.null(meta)){
         for(clust in meta){
             subser = subset(ser, idents = clust)
-            subser = FindNeighbors(subser, reduction = "mnn", verbose = FALSE)
-            subser = FindClusters(subser, resolution = res, verbose = FALSE)
+            Idents(subser) = subser$ident
             out_dir = paste0('2_de/cluster_', clust, '/')
             dir.create(out_dir)
             sub_marks = FindAllMarkers(subser, features = feats, logfc.thresh = 0,
