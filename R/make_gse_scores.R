@@ -5,7 +5,7 @@
 #' @param csv_dir       Directory to get csv file (Optional)
 #' @param type          Output score in Absolute or Real values
 #' @param from_gene     "ENSG" or "ENSMUSG" or "HGNC" or "MGI"             
-#' @param to_gene       "MGI" or HGNC
+#' @param to_gene       "MGI" or "HGNC"
 #' 
 #' This function will read in the gene sets from an existing list, gmt file, 
 #' or csv file and score cells based on scaled gene expression. The results 
