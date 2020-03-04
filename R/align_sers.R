@@ -110,8 +110,8 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sa
         strsplit(x, '_', fixed = TRUE)[[1]][3]
     }))
     ser_metas = metadata[ser_samples,]
-    rownames(ser_metas) = names(ser_samples)
-    ser = Seurat::AddMetaData(ser, ser_metas)
+    rownames(ser_metas) = colnames(ser)
+    ser = AddMetaData(ser, ser_metas)
 
     return(ser)
 }
