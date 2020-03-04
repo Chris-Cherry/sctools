@@ -87,7 +87,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
         rownames(counts) = conv[,2]
     }
 
-    ser = CreateSeuratObject(counts)
+    ser = CreateSeuratObject(counts, min.features = 2000)
     
      if(!is.null(hash_dir) & !is.null(hash_meta)){
         if(type == 'DropSeq'){
