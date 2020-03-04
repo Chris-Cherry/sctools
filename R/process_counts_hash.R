@@ -57,7 +57,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
     }
 
     if(!is.null(sample_id)){
-        colnames(counts) = paste(sample_id, colnames(counts), sep = '-')
+        colnames(counts) = paste(sample_id, colnames(counts), sep = '_')
     }
 
     c_sum = colSums(counts)
@@ -87,7 +87,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
         rownames(counts) = conv[,2]
     }
 
-    ser = CreateSeuratObject(counts, min.features = 2000)
+    ser = CreateSeuratObject(counts)
     
      if(!is.null(hash_dir) & !is.null(hash_meta)){
         if(type == 'DropSeq'){
