@@ -51,22 +51,9 @@ ref_ser_process <- function(ser, res = .8, ref_ser = NULL){
     # IMPLEMENT METHOD FOR LIST OF OTHER GENE SETS
     ############################################################################
 
-    sce <- as.SingleCellExperiment(ser)
-    sce <- computeSumFactors(sce)
-    sce <- normalize(sce)
-
-    rescale <- multiBatchNorm(sce, batch = sce@colData@listData$Origin)
-        
-    mnn_out <- fastMNN(rescale, batch = sce@colData@listData$Origin, subset.row = rownames(ser), 
-        k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
-
-    reducedDim(sce, "mnn") <- reducedDim(mnn_out, "corrected")
-
-    ser = as.Seurat(sce)
-
-    ser = FindNeighbors(ser, reduction = reduction, verbose = FALSE)
+    ser = FindNeighbors(ser, reduction = 'mnn', verbose = FALSE)
     ser = FindClusters(ser, resolution = res, verbose = FALSE)
-    ser = RunUMAP(ser, reduction = reduction, dims = 1:50, verbose = FALSE)
+    ser = RunUMAP(ser, reduction = 'mnn', dims = 1:50, verbose = FALSE)
     phate = phateR::phate(ser@reductions$mnn@cell.embeddings, seed = 42, n.jobs = -1, 
         verbose = FALSE)
 
