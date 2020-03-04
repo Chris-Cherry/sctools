@@ -69,6 +69,14 @@ make_gse_scores <- function(ser, directory = NULL, from_gene = 'HGNC',
         set_scores[set, names(scores)] = scores
     }
 
+    if (type != "Real" && type == "Abs")
+        {
+            set_scores = abs(set_scores)
+        }
+        else{
+            print("Default data type is Real values")
+        }
+
     # Add scores to Seurat object
     if(sum(names(ser@assays) == 'set_scores')){
         set_scores = rbind(ser@assays$set_scores@counts, set_scores)

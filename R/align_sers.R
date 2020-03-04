@@ -49,6 +49,13 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sa
         ser = Seurat::FindVariableFeatures(ser, verbose = FALSE)
     })
 
+    if (length(origin) > 1){
+        for (i in 1:length(origin)){
+            Idents(sers[[i]]) = origin[i]
+            sers[[i]]$orig.ident = origin[i]
+        }
+    }
+    
     # Convert Seurat objects to SingleCellExperiment objects
     sce = list()
     for(i in 1:length(sers)){
@@ -75,12 +82,24 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sa
         colData = sce_col)
 
     # Multiple batch correction
-    rescale <- multiBatchNorm(sce_merge, batch = eval(parse(text = paste0("sce_merge@colData@listData$", origin))))
-
-    mnn_out <- fastMNN(rescale, batch = eval(parse(text = paste0("sce_merge@colData@listData$", origin))), 
-    subset.row = rownames(sce[[1]]), k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
+    if (length(origin) > 1){
+        rescale <- multiBatchNorm(sce_merge, batch = sce_merge@colData$orig.ident)
+        mnn_out <- fastMNN(rescale, batch = sce_merge@colData$orig.ident, 
+            subset.row = rownames(sce[[1]]), k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
+    }
+    else{
+        rescale <- multiBatchNorm(sce_merge, batch = eval(parse(text = paste0("sce_merge@colData@listData$", origin))))
+        mnn_out <- fastMNN(rescale, batch = eval(parse(text = paste0("sce_merge@colData@listData$", origin))), 
+            subset.row = rownames(sce[[1]]), k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
+    }
 
     reducedDim(sce_merge, "mnn") <- reducedDim(mnn_out, "corrected")
+
+    # Delete duplicated colnames
+    dup = which(duplicated(colnames(sce_merge)))
+    if(length(dup) > 0){
+        sce_merge = sce_merge[,-dup]
+    }
 
     ser = as.Seurat(sce_merge)
     
