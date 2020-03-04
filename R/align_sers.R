@@ -105,7 +105,7 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sa
     
     metadata = read.table(meta_file, sep = ',', header = TRUE, row.names = 1)
     ser_samples = sapply(colnames(ser), function(x){
-        strsplit(x, '-', fixed = TRUE)[[1]][1]
+        strsplit(x, '_', fixed = TRUE)[[1]][1]
     })
     ser_metas = metadata[ser_samples,]
     rownames(ser_metas) = names(ser_samples)
