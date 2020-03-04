@@ -59,6 +59,7 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
     }
 
     ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+    ser = FindVaribleFeatures(ser, dispersion.cutoff = c(1, Inf), verbose = FALSE)
     ser = FindNeighbors(ser, reduction = "mnn", verbose = FALSE)
     ser = FindClusters(ser, resolution = res, verbose = FALSE)
     ser = RunUMAP(ser, reduction = "mnn", dims = 1:50, verbose = FALSE)

@@ -33,17 +33,17 @@ ref_ser_process <- function(ser, res = .8, ref_ser = NULL){
     ser = Seurat::FindVariableFeatures(ser, verbose = FALSE)
     
     scale_vars = c()
-    if(exists(ref_ser@meta.data$pct_mt)){
-        pct_mt = ref_ser@meta.data$pct_mt
-        ser$pct_mt = pct_mt
-        scale_vars = c(scale_vars, 'pct_mt')
+    if(!is.null(ref_ser@meta.data$pct_mito)){
+        pct_mt = ref_ser@meta.data$pct_mito
+        ser$pct_mito = pct_mt
+        scale_vars = c(scale_vars, 'pct_mito')
     }
-    if(exists(ref_ser@meta.data$G2M.Score) & exists(ref_ser@meta.data$S.Score)){
+    if(!is.null(ref_ser@meta.data$G2M.Score) & !is.null(ref_ser@meta.data$S.Score)){
         G2M.Score = ref_ser@meta.data$G2M.Score
         S.Score = ref_ser@meta.data$S.Score
         scale_vars = c(scale_vars, 'G2M.Score', 'S.Score')
     }
-    if(exists(ref_ser@meta.data$nCount_RNA)){
+    if(!is.null(ref_ser@meta.data$nCount_RNA)){
         scale_vars = c(scale_vars, 'nCount_RNA')
     }
 
@@ -51,6 +51,8 @@ ref_ser_process <- function(ser, res = .8, ref_ser = NULL){
     # IMPLEMENT METHOD FOR LIST OF OTHER GENE SETS
     ############################################################################
 
+    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+    ser = FindVaribleFeatures(ser, dispersion.cutoff = c(1, Inf), verbose = FALSE)
     ser = FindNeighbors(ser, reduction = 'mnn', verbose = FALSE)
     ser = FindClusters(ser, resolution = res, verbose = FALSE)
     ser = RunUMAP(ser, reduction = 'mnn', dims = 1:50, verbose = FALSE)
@@ -65,16 +67,6 @@ ref_ser_process <- function(ser, res = .8, ref_ser = NULL){
         verbose = FALSE)
     ser[['phate3d']] = CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
         assay = DefaultAssay(ser))
-
-    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
-
-    if(Seurat::DefaultAssay(ser) != 'RNA'){
-        ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, assay = 'RNA', 
-            verbose = FALSE, features = rownames(ser))
-    }
-    else{
-        ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
-    }
 
     return(ser)
 }
