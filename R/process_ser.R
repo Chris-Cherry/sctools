@@ -50,7 +50,7 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
     }
 
     if(!is.null(s_genes) & !is.null(g2m_genes)){
-        ser = Seurat::CellCycleScoring(ser, s_genes, g2m_genes)
+        ser = Seurat::CellCycleScoring(ser, readLines(s_genes), readLines(g2m_genes))
         scale_vars = c(scale_vars, 'G2M.Score', 'S.Score')
     }
 
