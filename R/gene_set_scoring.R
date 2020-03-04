@@ -25,19 +25,11 @@ gene_set_scoring <- function(ser, geneset, scaled = TRUE){
     if (!identical(which(is.na(pos_ind)), integer(0))){
         pos_ind = pos_ind[-which(is.na(pos_ind))]}
     pos_gene_subset = ser@assays$RNA@scale.data[pos_ind,]
-    pos_gene_neg_score = pos_gene_subset
-    pos_gene_neg_score[which(pos_gene_subset > 0)] = 0
-    pos_gene_pos_score = pos_gene_subset
-    pos_gene_pos_score[which(pos_gene_subset < 0)] = 0
     neg_ind = match(neg, rownames(ser@assays$RNA@scale.data))
     if (!identical(which(is.na(neg_ind)), integer(0))){
-    neg_ind = neg_ind[-which(is.na(neg_ind))]}
+        neg_ind = neg_ind[-which(is.na(neg_ind))]}
     neg_gene_subset = ser@assays$RNA@scale.data[neg_ind,]
-    neg_gene_neg_score = neg_gene_subset
-    neg_gene_neg_score[which(neg_gene_subset > 0)] = 0
-    neg_gene_pos_score = neg_gene_subset
-    neg_gene_pos_score[which(neg_gene_subset < 0)] = 0
-    scores = abs(colSums(neg_gene_neg_score))+abs(colSums(pos_gene_pos_score))-abs(colSums(neg_gene_pos_score))-abs(colSums(pos_gene_neg_score))
+    scores = colSums(neg_gene_subset*-1)+colSums(pos_gene_subset)
     names(scores) = colnames(ser)
     if (scaled) {scores = scores/length(gene_list[['all']])}
     return(scores)
