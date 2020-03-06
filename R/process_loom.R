@@ -18,6 +18,11 @@ process_loom <- function(file, ser, hashed = FALSE){
             x = strsplit(x, ':', fixed = TRUE)[[1]][2]
             return(substr(x, 1, nchar(x)-1))  
     })
+    file_name = sapply(file, function(x){
+            x = strsplit(x, '/', fixed = TRUE)[[1]][3]})
+    file_name = sapply(file_name, function(x){
+            x = strsplit(x, '.', fixed = TRUE)[[1]][1]})
+    bcs = paste0(bcs,"_",file_name)
     names(bcs) = c()
 
     # Fixing the unconventional column name
@@ -37,4 +42,5 @@ process_loom <- function(file, ser, hashed = FALSE){
         colnames(x) = names(tar_bcs)[match(overlap, tar_bcs)]
         return(x)
     })
+    return(loom)
 }
