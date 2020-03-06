@@ -13,12 +13,13 @@
 #' @return              Output a processed differenttial expression for plotting
 #' @export
 
-run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, res = .8){
+run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL){
     dir.create(out_dir)
 
     # Run DE on whole dataset based on the meta data
     if(is.null(feats)){feats = rownames(ser)}
     ser_list = list()
+    j = 1
     # Run DE on each cluster
     if (!is.null(meta)){
         for(clust in meta){
@@ -29,7 +30,8 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, res = .8){
             sub_marks = FindAllMarkers(subser, features = feats, logfc.thresh = 0,
                 return.thresh = Inf, assay = 'RNA', verbose = FALSE)
                 saveRDS(sub_marks, paste0(out_dir, 'submarks_', clust,'.RDS'))
-            ser_list[[clust]] <- subser
+            ser_list[[j]] <- subser
+            j = j + 1
 
             for(clust in levels(Idents(subser))){
                 cl_de = sub_marks[which(sub_marks$cluster == clust),]

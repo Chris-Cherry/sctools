@@ -18,7 +18,7 @@
 #' @export
 #'
 
-rnavel_plot <- function(loom, ser, out_file, dr = 'umap', cols = NULL, n_core = NULL, plot_info = NULL, ...){
+rnavel_plot <- function(loom, ser, out_file, dr = 'phate', cols = NULL, n_core = NULL, plot_info = NULL, ...){
     if(is.null(n_core)){
         n_core = future::availableCores()
     }
