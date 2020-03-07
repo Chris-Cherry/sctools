@@ -40,18 +40,15 @@ rnavel_plot <- function(loom, ser, out_file, dr = 'phate', cols = NULL, n_core =
         spliced_counts = loom$spliced[, tar_cells]
         unspliced_counts = loom$unspliced[, tar_cells]
 
-        #idents = Seurat::Idents(ser)[tar_cells]
-        idents = ident_tmp[tar_cells] 
-
         pcs = ser@reductions$mnn@cell.embeddings[tar_cells,]
         cell_dist <- as.dist(1-velocyto.R::armaCor(t(pcs)))
         emb = ser[[dr]]@cell.embeddings[tar_cells, 1:2]
 
         spliced = velocyto.R::filter.genes.by.cluster.expression(spliced_counts, 
-            idents, min.max.cluster.average = 0.2)
+            cell.colors, min.max.cluster.average = 0.2)
 
         unspliced = velocyto.R::filter.genes.by.cluster.expression(
-            unspliced_counts, idents, min.max.cluster.average = 0.05)
+            unspliced_counts, cell.colors, min.max.cluster.average = 0.05)
 
         vel_estimates = velocyto.R::gene.relative.velocity.estimates(spliced, 
             unspliced, n.cores = n_core, kCells = 40, 
