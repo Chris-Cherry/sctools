@@ -35,28 +35,30 @@ rnavel_plot <- function(loom, ser, out_file, dr = 'phate', cols = NULL, n_core =
     names(cell.colors) = names(ident_tmp)
 
     if(is.null(plot_info)){
-        tar_cells = intersect(colnames(loom$spliced), 
-            colnames(ser@assays$RNA@counts))
-        spliced_counts = loom$spliced[, tar_cells]
-        unspliced_counts = loom$unspliced[, tar_cells]
+        tar_cells = colnames(ser)
+        tar_genes = rownames(ser@assays$RNA@counts)
+        spliced_counts = loom$spliced[tar_genes, tar_cells]
+        unspliced_counts = loom$unspliced[tar_genes, tar_cells]
 
-        pcs = ser@reductions$mnn@cell.embeddings[tar_cells,]
+        idents = Idents(ser)
+        pcs = ser@reductions$pca@cell.embeddings[, 1:50]
         cell_dist <- as.dist(1-velocyto.R::armaCor(t(pcs)))
-        emb = ser[[dr]]@cell.embeddings[tar_cells, 1:2]
+        emb = ser[[dr]]@cell.embeddings[, 1:2]
 
         spliced = velocyto.R::filter.genes.by.cluster.expression(spliced_counts, 
-            cell.colors, min.max.cluster.average = 0.2)
+            idents, min.max.cluster.average = 0.2)
 
         unspliced = velocyto.R::filter.genes.by.cluster.expression(
-            unspliced_counts, cell.colors, min.max.cluster.average = 0.05)
+            unspliced_counts, idents, min.max.cluster.average = 0.05)
 
         vel_estimates = velocyto.R::gene.relative.velocity.estimates(spliced, 
             unspliced, n.cores = n_core, kCells = 40, 
             fit.quantile = 0.02, cell.dist = cell_dist)
 
         png(out_file, height = 1000, width = 1000)
-        plot_out = velocyto.R::show.velocity.on.embedding.cor(emb, vel_estimates, n = 200,
-            cell.colors = cell.colors, n.cores = n_core, scale = 'log', return.details = TRUE, ...)
+        plot_out = velocyto.R::show.velocity.on.embedding.cor(emb, vel_estimates, n = 1000,
+            cell.colors = cell.colors, n.cores = n_core, scale = 'log', cex = 1.25,
+            arrow.scale = 0.002, grid.n = 50, arrow.lwd = 1, do.par = T, ...)
         dev.off()
 
         return(list(emb, vel_estimates, plot_out))
