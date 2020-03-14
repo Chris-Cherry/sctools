@@ -19,18 +19,12 @@
 #' 
 #' @export
  
-
 align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sample'){
-    
-    if (length(sers) == 1){
-        sers = UpdateSeuratObject(sers)
-        sers = SplitObject(sers, split.by = origin)
-    }
-
     genes = c()
     for(ser in sers){
         genes = c(genes, rownames(ser@assays$RNA@counts))
     }
+    
     genes = unique(genes)
 
     min_cells = Inf
@@ -49,59 +43,21 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL, origin = 'Sa
         ser = Seurat::FindVariableFeatures(ser, verbose = FALSE)
     })
 
-    if (length(origin) > 1){
-        for (i in 1:length(origin)){
-            Idents(sers[[i]]) = origin[i]
-            sers[[i]]$orig.ident = origin[i]
-        }
-    }
-    
-    # Convert Seurat objects to SingleCellExperiment objects
-    sce = list()
-    for(i in 1:length(sers)){
-        sce[i] <- list(as.SingleCellExperiment(sers[[i]]))
-        sce[[i]] <- computeSumFactors(sce[[i]])
-        sce[[i]] <- normalize(sce[[i]])
-    }
-        
-    # Initate a single sce object of the combined data
-    for(i in 1:(length(sce) - 1)){
-        if (i == 1){
-            sce_counts <- cbind(sce[[i]]@assays@data@listData$counts, sce[[i+1]]@assays@data@listData$counts)
-            sce_logcount <- cbind(sce[[i]]@assays@data@listData$counts, sce[[i+1]]@assays@data@listData$logcounts)
-            sce_col <- rbind(colData(sce[[i]]), colData(sce[[i+1]]))
-        }
-        else {
-            sce_counts <- cbind(sce_counts, sce[[i+1]]@assays@data@listData$counts)
-            sce_logcount <- cbind(sce_logcount, sce[[i+1]]@assays@data@listData$logcounts)
-            sce_col <- rbind(sce_col, colData(sce[[i+1]]))
-        }
-    }
+    if(min_cells < 200){
+        k.filter = min_cells*.5
+    }else{k.filter = 200}
+    if(min_cells < 30){
+        k.score = min_cells
+    }else{k.score = 30}
+    if(min_cells < 5){
+        k.anchor = min_cells
+    }else{k.anchor = 5}
 
-    sce_merge <- SingleCellExperiment(assays = list(counts = sce_counts, logcounts = sce_logcount), rowData = rowData(sce[[1]]),
-        colData = sce_col)
-
-    # Multiple batch correction
-    if (length(origin) > 1){
-        rescale <- multiBatchNorm(sce_merge, batch = sce_merge@colData$orig.ident)
-        mnn_out <- fastMNN(rescale, batch = sce_merge@colData$orig.ident, 
-            subset.row = rownames(sce[[1]]), k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
-    }
-    else{
-        rescale <- multiBatchNorm(sce_merge, batch = eval(parse(text = paste0("sce_merge@colData@listData$", origin))))
-        mnn_out <- fastMNN(rescale, batch = eval(parse(text = paste0("sce_merge@colData@listData$", origin))), 
-            subset.row = rownames(sce[[1]]), k = 20, d = 50, BNPARAM = BiocNeighbors::AnnoyParam())
-    }
-
-    reducedDim(sce_merge, "mnn") <- reducedDim(mnn_out, "corrected")
-
-    # Delete duplicated colnames
-    dup = which(duplicated(colnames(sce_merge)))
-    if(length(dup) > 0){
-        sce_merge = sce_merge[,-dup]
-    }
-
-    ser = as.Seurat(sce_merge)
+    features = Seurat::SelectIntegrationFeatures(sers, verbose = FALSE)
+    anchors = Seurat::FindIntegrationAnchors(sers, verbose = FALSE, 
+        k.filter = k.filter, k.score = k.score, k.anchor = k.anchor)
+    ser = Seurat::IntegrateData(anchors, features.to.integrate = genes, verbose = FALSE)
+    Seurat::DefaultAssay(ser) = 'integrated'
     
     metadata = read.table(meta_file, sep = ',', header = TRUE, row.names = 1)
     ser_samples = paste0(sapply(colnames(ser), function(x){
