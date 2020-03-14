@@ -56,9 +56,9 @@ rnavel_plot <- function(loom, ser, out_file, dr = 'phate', cols = NULL, n_core =
             fit.quantile = 0.02, cell.dist = cell_dist)
 
         png(out_file, height = 1000, width = 1000)
-        plot_out = velocyto.R::show.velocity.on.embedding.cor(emb, vel_estimates, n = 1000,
+        plot_out = velocyto.R::show.velocity.on.embedding.cor(emb, vel_estimates, n = 200,
             cell.colors = cell.colors, n.cores = n_core, scale = 'log', cex = 1.25,
-            arrow.scale = 0.002, grid.n = 50, arrow.lwd = 1, do.par = T, ...)
+            arrow.scale = 40, grid.n = 50, arrow.lwd = 1, do.par = T, ...)
         dev.off()
 
         return(list(emb, vel_estimates, plot_out))
