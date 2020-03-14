@@ -59,7 +59,7 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
     }
 
     ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
-    ser = FindAllVariables(ser, verbose = FALSE)
+    ser = FindVariableFeatures(ser, verbose = FALSE)
     ser = RunPCA(ser, npcs =50,verbose = FALSE)
     ser = FindNeighbors(ser, reduction = "pca", verbose = FALSE)
     ser = FindClusters(ser, resolution = res, verbose = FALSE)
