@@ -24,7 +24,6 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL){
     if (!is.null(meta)){
         for(clust in meta){
             subser = subset(ser, idents = clust)
-            Idents(subser) = subser$ident
             out_dir = paste0('2_de/cluster_', clust, '/')
             dir.create(out_dir)
             sub_marks = FindAllMarkers(subser, features = feats, logfc.thresh = 0,
