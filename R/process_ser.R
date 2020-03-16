@@ -57,8 +57,12 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
     if(scale_umi){
         scale_vars = c(scale_vars, 'nCount_RNA')
     }
-
-    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser), assay = 'RNA')
+    
+    if(Seurat::DefaultAssay(ser) != 'RNA'){
+        ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, assay = 'RNA', 
+            verbose = FALSE, features = rownames(ser))
+    }
+    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
     ser = FindVariableFeatures(ser, verbose = FALSE)
     ser = RunPCA(ser, npcs =50,verbose = FALSE)
     ser = FindNeighbors(ser, reduction = "pca", verbose = FALSE)
