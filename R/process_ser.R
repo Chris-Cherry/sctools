@@ -58,7 +58,7 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
         scale_vars = c(scale_vars, 'nCount_RNA')
     }
 
-    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+    ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser), assay = 'RNA')
     ser = FindVariableFeatures(ser, verbose = FALSE)
     ser = RunPCA(ser, npcs =50,verbose = FALSE)
     ser = FindNeighbors(ser, reduction = "pca", verbose = FALSE)
