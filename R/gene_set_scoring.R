@@ -11,16 +11,9 @@
 #' @export
 
 gene_set_scoring <- function(ser, geneset, scaled = TRUE){
-
-    # Separate genes into positive and negative changes    
-    gene_list = list()
-    gene_list[["all"]] = geneset$genes
-    gene_list[["positive"]] = geneset$genes[which(geneset$FC>0)]
-    gene_list[["negative"]] = geneset$genes[which(geneset$FC<0)]
-
     # Calculate summed z-scores, taking into account directionality of fold change
-    pos = gene_list[["positive"]]
-    neg = gene_list[["negative"]]
+    pos = geneset$genes[which(geneset$FC>0)]
+    neg = geneset$genes[which(geneset$FC<0)]
     pos_ind = match(pos, rownames(ser@assays$RNA@scale.data))
     if (!identical(which(is.na(pos_ind)), integer(0))){
         pos_ind = pos_ind[-which(is.na(pos_ind))]}
@@ -29,9 +22,13 @@ gene_set_scoring <- function(ser, geneset, scaled = TRUE){
     if (!identical(which(is.na(neg_ind)), integer(0))){
         neg_ind = neg_ind[-which(is.na(neg_ind))]}
     neg_gene_subset = ser@assays$RNA@scale.data[neg_ind,]
-    scores = colSums(neg_gene_subset*-1)+colSums(pos_gene_subset)
+    if (is.null(dim(neg_gene_subset))){neg_score = neg_gene_subset * -1}
+    else {neg_score = colSums(neg_gene_subset*-1)}
+    if (is.null(dim(pos_gene_subset))){pos_score = pos_gene_subset}
+    else {pos_score = colSums(pos_gene_subset)}
+    scores = neg_score + pos_score
     names(scores) = colnames(ser)
-    if (scaled) {scores = scores/length(gene_list[['all']])}
+    if (scaled) {scores = scores/length(geneset$genes)}
     return(scores)
 }
 
