@@ -37,9 +37,9 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL){
         rownames(new_counts) = genes
         colnames(new_counts) = colnames(ser)
         new_counts[rownames(counts),] = matrix(counts)
-        ser = Seurat::CreateSeuratObject(new_counts, meta.data = ser[[]])
-        ser = Seurat::NormalizeData(ser, verbose = FALSE)
-        ser = Seurat::FindVariableFeatures(ser, verbose = FALSE)
+        ser = CreateSeuratObject(new_counts, meta.data = ser[[]])
+        ser = NormalizeData(ser, verbose = FALSE)
+        ser = FindVariableFeatures(ser, verbose = FALSE)
     })
 
     if(min_cells < 200){
@@ -52,11 +52,11 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL){
         k.anchor = min_cells
     }else{k.anchor = 5}
 
-    features = Seurat::SelectIntegrationFeatures(sers, verbose = FALSE)
-    anchors = Seurat::FindIntegrationAnchors(sers, verbose = FALSE, 
+    features = SelectIntegrationFeatures(sers, verbose = FALSE)
+    anchors = FindIntegrationAnchors(sers, dims = 1:50, verbose = FALSE, 
         k.filter = k.filter, k.score = k.score, k.anchor = k.anchor)
-    ser = Seurat::IntegrateData(anchors, features.to.integrate = genes, verbose = FALSE)
-    Seurat::DefaultAssay(ser) = 'integrated'
+    ser = IntegrateData(anchors, features.to.integrate = genes, dims = 1:50, verbose = FALSE)
+    DefaultAssay(ser) = 'integrated'
     
     metadata = read.table(meta_file, sep = ',', header = TRUE, row.names = 1)
     ser_samples = paste0(sapply(colnames(ser), function(x){
