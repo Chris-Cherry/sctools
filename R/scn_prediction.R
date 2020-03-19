@@ -15,7 +15,7 @@
 #' @export
 #'
 
-sCN_prediction <- function(query, stRef, expRef){
+scn_prediction <- function(query, stRef, expRef){
     # Extract query data
     seuratfile = singleCellNet::extractSeurat(query, exp_slot_name = "counts")
     sampTab = seuratfile$sampTab

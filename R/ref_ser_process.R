@@ -50,19 +50,28 @@ ref_ser_process <- function(ser, res = .8, ref_ser = NULL){
     ############################################################################
     # IMPLEMENT METHOD FOR LIST OF OTHER GENE SETS
     ############################################################################
-
+    if(Seurat::DefaultAssay(ser) != 'RNA'){
+        ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, assay = 'RNA', 
+            verbose = FALSE, features = rownames(ser))
+    }
     ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
-    ser = FindNeighbors(ser, reduction = 'mnn', verbose = FALSE)
+    ser = FindVariableFeatures(ser, verbose = FALSE)
+    ser = RunPCA(ser, npcs =50,verbose = FALSE)
+    ser = FindNeighbors(ser, reduction = "pca", verbose = FALSE)
     ser = FindClusters(ser, resolution = res, verbose = FALSE)
-    ser = RunUMAP(ser, reduction = 'mnn', dims = 1:50, verbose = FALSE)
-    phate = phateR::phate(ser@reductions$mnn@cell.embeddings, seed = 42, n.jobs = -1, 
+    ser = RunUMAP(ser, reduction = "pca", dims = 1:50, verbose = FALSE)
+    # ser = ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
+    # ser = FindNeighbors(ser, reduction = 'mnn', verbose = FALSE)
+    # ser = FindClusters(ser, resolution = res, verbose = FALSE)
+    # ser = RunUMAP(ser, reduction = 'mnn', dims = 1:50, verbose = FALSE)
+    phate = phateR::phate(ser@reductions$pca@cell.embeddings, seed = 42, n.jobs = -1, 
         verbose = FALSE)
 
     ser[['phate']] = CreateDimReducObject(phate$embedding, key = 'PHATE_',
         assay = DefaultAssay(ser))
 
     # Generate 3d phate    
-    phate3d = phateR::phate(ser@reductions$mnn@cell.embeddings, ndim = 3, seed = 42, n.jobs = -1, 
+    phate3d = phateR::phate(ser@reductions$pca@cell.embeddings, ndim = 3, seed = 42, n.jobs = -1, 
         verbose = FALSE)
     ser[['phate3d']] = CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
         assay = DefaultAssay(ser))
