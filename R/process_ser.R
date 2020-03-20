@@ -66,7 +66,7 @@ process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE,
     phate = phateR::phate(ser@reductions$pca@cell.embeddings, seed = 42, n.jobs = -1, 
         verbose = FALSE)
 
-    ser[['phate']] = CreateDimReducObject(phate$embedding, key = 'PHATE_',
+    ser[['phate']] = CreateDimReducObject(100*phate$embedding, key = 'PHATE_',
         assay = DefaultAssay(ser))
 
     # Generate 3d phate    
