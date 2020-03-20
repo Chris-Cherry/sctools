@@ -30,6 +30,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
     B_dir = NULL, umi_thresh = 500){
 
 
+
     if(type == 'DropSeq'){
         prefix = tail(strsplit(directory, '/', fixed = TRUE)[[1]], n = 1)
         file = paste0(directory, '/', prefix, '_DGE.txt.gz')
