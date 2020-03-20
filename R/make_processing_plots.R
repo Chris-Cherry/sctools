@@ -2,7 +2,7 @@
 #' Parameters:
 #' @param ser           Seurat object to process.
 #' @param out_dir       Output directory
-#' @param colors        Custom color scheme
+#' @param colors        Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
 #'   
 #' Creates a number of plots and csv files relating to cluster composition
 #' by all metadata in the ser object. This includes dim plots, feature plots,
@@ -24,14 +24,24 @@ make_processing_plots <- function(ser, out_dir = '1_process/', colors = NULL){
         pt.size = 1
     }
 
+    fp_cols = c("#2c7bb6", "#00a6ca", "#00ccbc", "#90eb9d", "#ffff8c", "#f9d057",
+        "#f29e2e", "#e76818", "#d7191c")
+    cl_cols = colors[['seurat_clusters']]
+
     for(meta in colnames(ser[[]])){
         print(meta)
         if(class(ser[[meta]][,1]) == 'factor'){
-            if(meta == 'seurat_clusters'){
-                cols = colors
+            # Pull out colors for metadata if it exists.
+            id = which(names(colors) == meta)
+            if(length(id)==1){
+                cols = colors[[meta]]
             } else {
                 cols = NULL
             }
+            if(length(id)>1){
+                warning('Found multiple color schemes for a metadata - ignoring colors.')
+            }
+
             # Color dim plots by meta
             png(paste0(out_dir, '/', meta, '_umap_nolabel.png'), 
                 height = 1000, width = 1000)
@@ -61,47 +71,54 @@ make_processing_plots <- function(ser, out_dir = '1_process/', colors = NULL){
             w = 500*ncol
             png(paste0(out_dir, '/', meta, '_umap_nolabel_split.png'), 
                 height = h, width = w)
-            print(Seurat::DimPlot(ser, split.by = meta, cols = colors, pt.size = pt.size, ncol = ncol))
+            print(Seurat::DimPlot(ser, split.by = meta, cols = cl_cols, pt.size = pt.size, ncol = ncol))
             dev.off()
 
             png(paste0(out_dir, '/', meta, '_phate_nolabel_split.png'), 
                 height = h, width = w)
-            print(Seurat::DimPlot(ser, split.by = meta, cols = colors, pt.size = pt.size, ncol = ncol, reduction = 'phate'))
+            print(Seurat::DimPlot(ser, split.by = meta, cols = cl_cols, pt.size = pt.size, ncol = ncol, reduction = 'phate'))
             dev.off()
 
             png(paste0(out_dir, '/', meta, '_umap_split.png'), 
                 height = h, width = w)
-            print(Seurat::DimPlot(ser, split.by = meta, cols = colors, pt.size = pt.size, ncol = ncol, label.size = 8, label = TRUE))
+            print(Seurat::DimPlot(ser, split.by = meta, cols = cl_cols, pt.size = pt.size, ncol = ncol, label.size = 8, label = TRUE))
             dev.off()
 
             png(paste0(out_dir, '/', meta, '_phate_split.png'), 
                 height = h, width = w)
-            print(Seurat::DimPlot(ser, split.by = meta, cols = colors, pt.size = pt.size, ncol = ncol, label.size = 8, label = TRUE, reduction = 'phate'))
+            print(Seurat::DimPlot(ser, split.by = meta, cols = cl_cols, pt.size = pt.size, ncol = ncol, label.size = 8, label = TRUE, reduction = 'phate'))
             dev.off() 
 
             clust_proportions(ser, meta, 
                 paste0(out_dir, '/', meta, '_proportions.pdf'),
-                paste0(out_dir, '/', meta, '_proportions.csv'))           
+                paste0(out_dir, '/', meta, '_proportions.csv'),
+                cols)           
         }
         if(class(ser[[meta]][,1]) == 'numeric'){
             png(paste0(out_dir, '/', meta, '_umap_feature.png'),
                 height = 1000, width = 1000)
-            print(Seurat::FeaturePlot(ser, features = meta, pt.size = pt.size))
+            print(Seurat::FeaturePlot(ser, features = meta, pt.size = pt.size, 
+                cols = fp_cols, order = TRUE))
             dev.off()
 
             png(paste0(out_dir, '/', meta, '_phate_feature.png'),
                 height = 1000, width = 1000)
-            print(Seurat::FeaturePlot(ser, features = meta, pt.size = pt.size, reduction = 'phate'))
+            print(Seurat::FeaturePlot(ser, features = meta, pt.size = pt.size, 
+                cols = fp_cols, order = TRUE, reduction = 'phate'))
             dev.off()
 
             png(paste0(out_dir, '/', meta, '_umap_feature_q10.png'),
                 height = 1000, width = 1000)
-            print(Seurat::FeaturePlot(ser, features = meta,  pt.size = pt.size, min.cutoff = 'q10', max.cutoff = 'q90'))
+            print(Seurat::FeaturePlot(ser, features = meta,  pt.size = pt.size, 
+                cols = fp_cols, order = TRUE, min.cutoff = 'q10',
+                max.cutoff = 'q90'))
             dev.off()
 
             png(paste0(out_dir, '/', meta, '_phate_feature_q10.png'),
                 height = 1000, width = 1000)
-            print(Seurat::FeaturePlot(ser, features = meta,  pt.size = pt.size, reduction = 'phate', min.cutoff = 'q10', max.cutoff = 'q90'))
+            print(Seurat::FeaturePlot(ser, features = meta,  pt.size = pt.size, 
+                cols = fp_cols, order = TRUE, reduction = 'phate', 
+                min.cutoff = 'q10', max.cutoff = 'q90'))
             dev.off()
         }
     }
