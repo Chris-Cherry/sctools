@@ -1,5 +1,4 @@
 #' Processes counts into a Seurat object prepared for alignment.
-#' Parameters:
 #' @param ser           Seurat object to process.
 #' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.
 #' @param mt_thresh     Max percent of umi's from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.
@@ -8,8 +7,7 @@
 #' @param s_genes       Genes to use for s scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
 #' @param res           Resolution for clustering
 #' @param other_sets    A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.
-#' @param ref_ser       A processed reference Seurat object used to as reference
-#'                      for cell selection.
+#' @param ref_ser       A processed reference Seurat object used to as reference for cell selection.
 #' 
 #' Reads in a blank ser object (usually from 2) and processes
 #' with a traditional Seurat pipeline. By default will scale both RNA and
