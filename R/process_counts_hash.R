@@ -11,6 +11,7 @@
 #' @param type          "DropSeq" or "10x"
 #' @param T_dir         Optional directory to T cell TCR
 #' @param B_dir         optional directory to B cell BCR
+#' @param umi_thresh    Minimum total umi count for cells
 #' 
 #' This script reads in a counts file from either the DropSeq or 10x 
 #' pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object 
@@ -25,7 +26,8 @@
 #' @export
 
 process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL, 
-    hash_meta = NULL, sample_id = NULL, type = 'DropSeq', T_dir = NULL, B_dir = NULL){
+    hash_meta = NULL, sample_id = NULL, type = 'DropSeq', T_dir = NULL, 
+    B_dir = NULL, umi_thresh = 500){
 
 
     if(type == 'DropSeq'){
@@ -61,7 +63,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
     }
 
     c_sum = colSums(counts)
-    c_take = which(c_sum >= 500)
+    c_take = which(c_sum >= umi_thresh)
     counts = counts[,names(c_take)]
     counts = as(as.matrix(counts), "sparseMatrix")
 
