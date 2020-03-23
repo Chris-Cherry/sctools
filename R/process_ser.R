@@ -1,5 +1,9 @@
 #' Processes counts into a Seurat object prepared for alignment.
 #' 
+#' Reads in a blank ser object (usually from 2) and processes
+#' with a traditional Seurat pipeline. By default will scale both RNA and
+#' the default assay if not RNA but will perform PCA on default assay.
+#'
 #' Parameters:
 #' @param ser           Seurat object to process.
 #' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.
@@ -10,10 +14,6 @@
 #' @param res           Resolution for clustering
 #' @param other_sets    A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.
 #' @param ref_ser       A processed reference Seurat object used to as reference for cell selection.
-#' 
-#' Reads in a blank ser object (usually from 2) and processes
-#' with a traditional Seurat pipeline. By default will scale both RNA and
-#' the default assay if not RNA but will perform PCA on default assay.
 #' 
 #' @import Seurat
 #' @import phateR

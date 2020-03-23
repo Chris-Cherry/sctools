@@ -33,15 +33,16 @@ process_ser(
 
 \item{other_sets}{A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.}
 
-\item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.
-
-Reads in a blank ser object (usually from 2) and processes
-with a traditional Seurat pipeline. By default will scale both RNA and
-the default assay if not RNA but will perform PCA on default assay.}
+\item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.}
 }
 \value{
 Outputs a processed Seurat outputs (UMAP, Phate)
 }
 \description{
+Reads in a blank ser object (usually from 2) and processes
+with a traditional Seurat pipeline. By default will scale both RNA and
+the default assay if not RNA but will perform PCA on default assay.
+}
+\details{
 Parameters:
 }
