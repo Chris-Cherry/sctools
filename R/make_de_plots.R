@@ -16,7 +16,7 @@
 make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '2_de/', cols = NULL,
     feature_plots = TRUE, meta = NULL){
     fp_cols = c("#2c7bb6", "#00a6ca", "#00ccbc", "#90eb9d", "#ffff8c", "#f9d057",
-    "#f29e2e", "#e76818", "#d7191c")
+        "#f29e2e", "#e76818", "#d7191c")
 
     # Process each cluster
     if (!is.null(list_ser)){
