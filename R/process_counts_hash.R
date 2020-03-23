@@ -60,7 +60,7 @@ process_counts_hash <- function(directory, from_gene, to_gene, hash_dir = NULL,
     }
 
     if(!is.null(sample_id)){
-        colnames(counts) = paste(colnames(counts), sample_id, sep = '_')
+        colnames(counts) = paste(sample_id, colnames(counts), sep = '-')
     }
 
     c_sum = colSums(counts)
