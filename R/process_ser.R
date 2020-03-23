@@ -1,18 +1,13 @@
 #' Processes counts into a Seurat object prepared for alignment.
-#' Parameters:
 #' @param ser           Seurat object to process.
-#' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If 
-#'                      left blank mt gene % will not be used to scale.
+#' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.
+#' @param mt_thresh     Max percent of umi's from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.
 #' @param scale_umi     Whether or not to scale on total UMI count
-#' @param g2m_genes     Genes to use for g2m scoring and scaling. If left blank
-#'                      cell cycle scoring and scaling will not be done.
-#' @param s_genes       Genes to use for s scoring and scaling. If left blank
-#'                      cell cycle scoring and scaling will not be done.
+#' @param g2m_genes     Genes to use for g2m scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
+#' @param s_genes       Genes to use for s scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
 #' @param res           Resolution for clustering
-#' @param other_sets    A named list of gene sets to be used similar to %mt for 
-#'                      scoring and scaling. Names will appear in metadata.
-#' @param ref_ser       A processed reference Seurat object used to as reference
-#'                      for cell selection.
+#' @param other_sets    A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.
+#' @param ref_ser       A processed reference Seurat object used to as reference for cell selection.
 #' 
 #' Reads in a blank ser object (usually from 2) and processes
 #' with a traditional Seurat pipeline. By default will scale both RNA and
@@ -24,7 +19,7 @@
 #' @return Outputs a processed Seurat outputs (UMAP, Phate) 
 #' @export
 
-process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE, 
+process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE, 
     g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL, ref_ser = NULL){
 
     ser = UpdateSeuratObject(ser)
@@ -44,7 +39,7 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
         dat = Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA')
         pct_mt = Matrix::colSums(dat[mt_genes,])/ser$nCount_RNA
         ser$pct_mt = pct_mt
-        keep = names(pct_mt)[which(pct_mt <= .1)]
+        keep = names(pct_mt)[which(pct_mt <= mt_thresh)]
         ser = subset(ser, cells = keep)
         scale_vars = c(scale_vars, 'pct_mt')
     }
@@ -71,7 +66,7 @@ process_ser <- function(ser, mt_handle = NULL, scale_umi = TRUE,
     phate = phateR::phate(ser@reductions$pca@cell.embeddings, seed = 42, n.jobs = -1, 
         verbose = FALSE)
 
-    ser[['phate']] = CreateDimReducObject(phate$embedding, key = 'PHATE_',
+    ser[['phate']] = CreateDimReducObject(100*phate$embedding, key = 'PHATE_',
         assay = DefaultAssay(ser))
 
     # Generate 3d phate    

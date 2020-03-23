@@ -11,7 +11,7 @@
 #' @import grDevices
 #'
 
-clust_proportions = function(ser, meta, pdf, csv){
+clust_proportions = function(ser, meta, pdf, csv, cols){
 
     # Start by generating null distribution for idents
     n = length(Seurat::Idents(ser))
@@ -58,7 +58,11 @@ clust_proportions = function(ser, meta, pdf, csv){
         plot = ggplot2::ggplot(temp, ggplot2::aes(x="", y=Freq, fill=Var1)) +
             ggplot2::geom_bar(width=1, stat="identity") +
             ggplot2::labs(title = clust, subtitle = paste(pval_names, collapse = ' ')) +
-            ggplot2::theme_void() 
+            ggplot2::theme_void()
+
+        if(!is.null(cols)){
+            plot = plot + ggplot2::scale_fill_manual(values = cols[names(comps)])
+        } 
 
 
         # Pie chart:
