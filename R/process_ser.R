@@ -5,7 +5,7 @@
 #' the default assay if not RNA but will perform PCA on default assay.
 #'
 #' @param ser           Seurat object to process.
-#' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.
+#' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene percent will not be used to scale.
 #' @param mt_thresh     Max percent of umis from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.
 #' @param scale_umi     Whether or not to scale on total UMI count.
 #' @param g2m_genes     Genes to use for g2m scoring and scaling. If left blank cell cycle scoring and scaling will not be done.

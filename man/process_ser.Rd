@@ -19,7 +19,7 @@ process_ser(
 \arguments{
 \item{ser}{Seurat object to process.}
 
-\item{mt_handle}{Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.}
+\item{mt_handle}{Regex used to identify mitochondrial genes for scaling. If left blank mt gene percent will not be used to scale.}
 
 \item{mt_thresh}{Max percent of umis from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.}
 
