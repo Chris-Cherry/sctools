@@ -31,7 +31,7 @@ process_ser(
 
 \item{res}{Resolution for clustering.}
 
-\item{other_sets}{A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.}
+\item{other_sets}{A named list of gene sets to be used similar to percent mt for scoring and scaling. Names will appear in metadata.}
 
 \item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.}
 }

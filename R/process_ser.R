@@ -11,7 +11,7 @@
 #' @param g2m_genes     Genes to use for g2m scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
 #' @param s_genes       Genes to use for s scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
 #' @param res           Resolution for clustering.
-#' @param other_sets    A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.
+#' @param other_sets    A named list of gene sets to be used similar to percent mt for scoring and scaling. Names will appear in metadata.
 #' @param ref_ser       A processed reference Seurat object used to as reference for cell selection.
 #' 
 #' @import Seurat
