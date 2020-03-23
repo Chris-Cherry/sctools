@@ -19,29 +19,27 @@ process_ser(
 \arguments{
 \item{ser}{Seurat object to process.}
 
-\item{mt_handle}{Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.}
+\item{mt_handle}{Regex used to identify mitochondrial genes for scaling. If left blank mt gene percent will not be used to scale.}
 
-\item{mt_thresh}{Max percent of umi's from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.}
+\item{mt_thresh}{Max percent of umis from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.}
 
-\item{scale_umi}{Whether or not to scale on total UMI count}
+\item{scale_umi}{Whether or not to scale on total UMI count.}
 
 \item{g2m_genes}{Genes to use for g2m scoring and scaling. If left blank cell cycle scoring and scaling will not be done.}
 
 \item{s_genes}{Genes to use for s scoring and scaling. If left blank cell cycle scoring and scaling will not be done.}
 
-\item{res}{Resolution for clustering}
+\item{res}{Resolution for clustering.}
 
-\item{other_sets}{A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.}
+\item{other_sets}{A named list of gene sets to be used similar to percent mt for scoring and scaling. Names will appear in metadata.}
 
-\item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.
-
-Reads in a blank ser object (usually from 2) and processes
-with a traditional Seurat pipeline. By default will scale both RNA and
-the default assay if not RNA but will perform PCA on default assay.}
+\item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.}
 }
 \value{
 Outputs a processed Seurat outputs (UMAP, Phate)
 }
 \description{
-Parameters:
+Reads in a blank ser object (usually from 2) and processes
+with a traditional Seurat pipeline. By default will scale both RNA and
+the default assay if not RNA but will perform PCA on default assay.
 }
