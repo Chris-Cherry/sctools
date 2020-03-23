@@ -11,7 +11,8 @@ make_de_plots(
   feats = NULL,
   out_dir = "2_de/",
   cols = NULL,
-  feature_plots = TRUE
+  feature_plots = TRUE,
+  meta = NULL
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ If NULL then will run on all genes}
 \item{cols}{Name vector of colors by cluster}
 
 \item{feature_plots}{Whether or not to include feature plots in the pdf output.}
+
+\item{meta}{subset that you want to graph}
 }
 \description{
 Runs differential expression and creates relevant plots for a ser object

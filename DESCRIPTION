@@ -14,4 +14,4 @@ Suggests: devtools, roxygen2
 License: JHE
 LazyData: true
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
