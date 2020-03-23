@@ -32,6 +32,9 @@ rnavel_plot(
 
 \item{...}{Parameters to pass to velocyto.R::show.velocity.on.embedding.cor}
 }
+\value{
+Return lists of objects containing information about rna velocity
+}
 \description{
 The function takes a loom file and Seurat object and creates a projection of
 RNA velocity onto a dimensional reduction of your choice. The dimensional

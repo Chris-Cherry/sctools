@@ -9,7 +9,7 @@ It also uses a permutation based test to determine statistical enrichment
 of clusters by the given metadata. The stats are returned in the subtitles
 of the pie charts.}
 \usage{
-clust_proportions(ser, meta, pdf, csv)
+clust_proportions(ser, meta, pdf, csv, cols)
 }
 \arguments{
 \item{ser}{Seurat object with clusters and given metadata}

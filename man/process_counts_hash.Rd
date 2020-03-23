@@ -13,7 +13,10 @@ process_counts_hash(
   hash_dir = NULL,
   hash_meta = NULL,
   sample_id = NULL,
-  type = "DropSeq"
+  type = "DropSeq",
+  T_dir = NULL,
+  B_dir = NULL,
+  umi_thresh = 500
 )
 }
 \arguments{
@@ -30,7 +33,13 @@ or cell ranger}
 
 \item{sample_id}{Optional experimental ID to prefix cell names}
 
-\item{type}{"DropSeq" or "10x"
+\item{type}{"DropSeq" or "10x"}
+
+\item{T_dir}{Optional directory to T cell TCR}
+
+\item{B_dir}{optional directory to B cell BCR}
+
+\item{umi_thresh}{Minimum total umi count for cells
 
 This script reads in a counts file from either the DropSeq or 10x 
 pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object}

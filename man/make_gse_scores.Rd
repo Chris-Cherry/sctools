@@ -21,7 +21,7 @@ make_gse_scores(
 
 \item{from_gene}{"ENSG" or "ENSMUSG" or "HGNC" or "MGI"}
 
-\item{to_gene}{"MGI" or HGNC
+\item{to_gene}{"MGI" or "HGNC"
 
 This function will read in the gene sets from an existing list, gmt file, 
 or csv file and score cells based on scaled gene expression. The results 

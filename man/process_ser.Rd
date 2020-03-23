@@ -7,6 +7,7 @@
 process_ser(
   ser,
   mt_handle = NULL,
+  mt_thresh = 0.1,
   scale_umi = TRUE,
   g2m_genes = NULL,
   s_genes = NULL,
@@ -18,25 +19,29 @@ process_ser(
 \arguments{
 \item{ser}{Seurat object to process.}
 
-\item{mt_handle}{Regex used to identify mitochondrial genes for scaling. If left blank mitochondrial gene percentages will not be used to scale.}
+\item{mt_handle}{Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.}
+
+\item{mt_thresh}{Max percent of umi's from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.}
 
 \item{scale_umi}{Whether or not to scale on total UMI count}
 
-\item{g2m_genes}{Genes to use for g2m scoring and scaling. If left blankcell cycle scoring and scaling will not be done.}
+\item{g2m_genes}{Genes to use for g2m scoring and scaling. If left blank cell cycle scoring and scaling will not be done.}
 
-\item{s_genes}{Genes to use for s scoring and scaling. If left blankcell cycle scoring and scaling will not be done.}
+\item{s_genes}{Genes to use for s scoring and scaling. If left blank cell cycle scoring and scaling will not be done.}
 
 \item{res}{Resolution for clustering}
 
-\item{other_sets}{A named list of gene sets to be used for scoring as percentage of counts and subsequent scaling. Names will appear in metadata.}
+\item{other_sets}{A named list of gene sets to be used similar to %mt for scoring and scaling. Names will appear in metadata.}
 
-\item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.}
+\item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.
+
+Reads in a blank ser object (usually from 2) and processes
+with a traditional Seurat pipeline. By default will scale both RNA and
+the default assay if not RNA but will perform PCA on default assay.}
 }
 \value{
-Outputs a processed Seurat outputs (PCA, UMAP, Phate)
+Outputs a processed Seurat outputs (UMAP, Phate)
 }
 \description{
-Reads in a blank ser object (usually from align_sers.R) and processes
-with a traditional Seurat pipeline. By default will scale both RNA and
-the default assay if not RNA but will perform PCA on default assay.
+Processes counts into a Seurat object prepared for alignment.
 }

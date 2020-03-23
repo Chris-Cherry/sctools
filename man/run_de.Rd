@@ -5,7 +5,7 @@
 \title{Runs differential expression and creates relevant plots for a ser object
 Parameters:}
 \usage{
-run_de(ser, feats = NULL, out_dir = "2_de/", meta = NULL)
+run_de(ser, feats = NULL, out_dir = "2_de/", meta = NULL, origin = "Condition")
 }
 \arguments{
 \item{ser}{The Seurat object to use}
@@ -15,7 +15,11 @@ If NULL then will run on all genes}
 
 \item{out_dir}{Directory to write plots and save markers.}
 
-\item{meta}{(Optional) Pass in meta data that user wants to subset}
+\item{meta}{(Optional) Pass in cluster name that user wants to run DE}
+
+\item{origin}{(Optional) Pass in what parameters in the each clusters that user wants to run DE}
+
+\item{res}{(Optional) Resolution for clustering in each subset}
 }
 \value{
 Output a processed differenttial expression for plotting

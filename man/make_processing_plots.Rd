@@ -12,7 +12,7 @@ make_processing_plots(ser, out_dir = "1_process/", colors = NULL)
 
 \item{out_dir}{Output directory}
 
-\item{colors}{Custom color scheme
+\item{colors}{Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
   
 Creates a number of plots and csv files relating to cluster composition
 by all metadata in the ser object. This includes dim plots, feature plots,

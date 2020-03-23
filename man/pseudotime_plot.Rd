@@ -2,14 +2,14 @@
 % Please edit documentation in R/pseudotime_plot.R
 \name{pseudotime_plot}
 \alias{pseudotime_plot}
-\title{Creates pusedotime}
+\title{Creates pseudotime}
 \usage{
 pseudotime_plot(
   ser,
   out_dir = "4_pseudotime",
   cluster_start = NULL,
   cluster_end = NULL,
-  cal_reduction = "pca",
+  cal_reduction = "phate",
   plot_reduction = "phate",
   group_by = NULL,
   lineage_ls = NULL
@@ -31,5 +31,5 @@ pseudotime_plot(
 \item{reduction}{Reduction method}
 }
 \description{
-Creates pusedotime
+Creates pseudotime
 }
