@@ -43,5 +43,5 @@ the default assay if not RNA but will perform PCA on default assay.}
 Outputs a processed Seurat outputs (UMAP, Phate)
 }
 \description{
-Processes counts into a Seurat object prepared for alignment.
+Parameters:
 }

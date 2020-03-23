@@ -1,4 +1,6 @@
 #' Processes counts into a Seurat object prepared for alignment.
+#' 
+#' Parameters:
 #' @param ser           Seurat object to process.
 #' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene % will not be used to scale.
 #' @param mt_thresh     Max percent of umi's from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.
