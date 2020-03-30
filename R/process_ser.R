@@ -13,7 +13,8 @@
 #' @param res           Resolution for clustering.
 #' @param other_sets    A named list of gene sets to be used similar to percent mt for scoring and scaling. Names will appear in metadata.
 #' @param ref_ser       A processed reference Seurat object used to as reference for cell selection.
-#' 
+#' @param scale_vars    Other features to use for scaling. 
+#'
 #' @import Seurat
 #' @import phateR
 #' @import Matrix
@@ -21,7 +22,8 @@
 #' @export
 
 process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE, 
-    g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL, ref_ser = NULL){
+    g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL, ref_ser = NULL,
+    scale_vars = NULL){
 
     ser = Seurat::UpdateSeuratObject(ser)
 
@@ -32,8 +34,8 @@ process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE,
     if(!is.null(ref_ser)){
         ser = ser[ , intersect(colnames(ser), colnames(ref_ser))]
     }
-    
-    scale_vars = c()
+
+    if(is.null(scale_vars)){scale_vars = c()}
 
     if(!is.null(mt_handle)){
         mt_genes = grep(mt_handle, rownames(ser))
