@@ -55,7 +55,7 @@ align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL){
     features = SelectIntegrationFeatures(sers, verbose = FALSE)
     anchors = FindIntegrationAnchors(sers, dims = 1:50, verbose = FALSE, 
         k.filter = k.filter, k.score = k.score, k.anchor = k.anchor)
-    ser = IntegrateData(anchors, features.to.integrate = genes, dims = 1:50, verbose = FALSE)
+    ser = IntegrateData(anchors, features.to.integrate = features, dims = 1:50, verbose = FALSE)
     DefaultAssay(ser) = 'integrated'
     
     metadata = read.table(meta_file, sep = ',', header = TRUE, row.names = 1)
