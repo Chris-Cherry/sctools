@@ -99,18 +99,28 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
         dev.off()
         
         pdf(paste0(out_dir, '/clust_vlns.pdf'), height = 20, width = 20)
-        
         for(clust in levels(Seurat::Idents(ser))){
             top = top10$gene[which(top10$cluster == clust)]
             print(Seurat::VlnPlot(ser, cols = cols, pt.size = 0, features = top, ncol = 3, 
                 assay = 'RNA'))
-            if(feature_plots){
-            print(Seurat::FeaturePlot(ser, features = top, ncol = 3, cols = fp_cols))
-            print(Seurat::FeaturePlot(ser, features = top, ncol = 3, cols = fp_cols, 
-                min.cutoff = 'q10', max.cutoff = 'q90'))
-            }
         }
         dev.off()
+
+        if(feature_plots){
+            for(clust in levels(Seurat::Idents(ser))){
+                png(paste0(out_dir, '/clust_' , clust, '_fp.png'), 
+                    height = 2000, width = 1500)
+                print(Seurat::FeaturePlot(ser, features = top, ncol = 3, 
+                    cols = fp_cols))
+                dev.off()
+
+                png(paste0(out_dir, '/clust_' , clust, '_fp_q10.png'), 
+                    height = 2000, width = 1500)
+                print(Seurat::FeaturePlot(ser, features = top, ncol = 3, 
+                    cols = fp_cols, min.cutoff = 'q10', max.cutoff = 'q90'))
+                dev.off()
+            }
+        }
     }
     else{
         print("Please input the seurat dataset, either input whole dataset or a list of clusters")
