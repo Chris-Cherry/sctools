@@ -13,7 +13,8 @@ process_ser(
   s_genes = NULL,
   res = 0.8,
   other_sets = NULL,
-  ref_ser = NULL
+  ref_ser = NULL,
+  scale_vars = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ process_ser(
 \item{other_sets}{A named list of gene sets to be used similar to percent mt for scoring and scaling. Names will appear in metadata.}
 
 \item{ref_ser}{A processed reference Seurat object used to as reference for cell selection.}
+
+\item{scale_vars}{Other features to use for scaling.}
 }
 \value{
 Outputs a processed Seurat outputs (UMAP, Phate)
