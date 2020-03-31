@@ -108,6 +108,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
 
         if(feature_plots){
             for(clust in levels(Seurat::Idents(ser))){
+                top = top10$gene[which(top10$cluster == clust)]
                 png(paste0(out_dir, '/clust_' , clust, '_fp.png'), 
                     height = 2000, width = 1500)
                 print(Seurat::FeaturePlot(ser, features = top, ncol = 3, 

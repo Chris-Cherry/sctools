@@ -27,7 +27,7 @@ process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE,
 
     ser = Seurat::UpdateSeuratObject(ser)
 
-    feat_sums = rowSums(Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA') != 0)
+    feat_sums = Matrix::rowSums(Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA') != 0)
     feat_keep = names(feat_sums)[which(feat_sums > ncol(ser)*.001)]
     ser = subset(ser, features = feat_keep)
     
