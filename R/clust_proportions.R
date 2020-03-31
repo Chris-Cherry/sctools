@@ -23,7 +23,8 @@ clust_proportions = function(ser, meta, pdf, csv, cols){
     }
     perm_idents = perm_idents - 1
     clust_comps = c()
-    meta_totals = table(droplevels(ser[[meta]]))
+    meta_totals = table(ser[[meta]])
+    meta_totals[which(meta_totals == 0)] = 1
     # Origins of pooled clusters
     pdf(pdf, width = 18)
     for(clust in levels(Seurat::Idents(ser))){
