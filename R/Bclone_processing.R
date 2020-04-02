@@ -32,7 +32,7 @@ Bclone_processing <- function(ser, out_dir = "BCell/"){
     j = 1
     k = 1
     for (i in 1:length(rownames(Bcell_mx))){
-        if(length(which(Bcell_mx[[i,3]] == Bcell_mx[,3])) > 1) > 1 & Bcell_mx[[i,3]] != "NA" & Bcell_mx[[i,3]] != "None"){
+        if(length(which(Bcell_mx[[i,3]] == Bcell_mx[,3])) > 1 & Bcell_mx[[i,3]] != "NA" & Bcell_mx[[i,3]] != "None"){
             doubleB_clone[j] <- list(Bcell_mx[intersect(which(Bcell_mx[[i,3]] == Bcell_mx[,3]), which(Bcell_mx[[i,5]] == Bcell_mx[,5])),])
             j = j + 1
         }
