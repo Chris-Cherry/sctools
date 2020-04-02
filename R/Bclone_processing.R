@@ -63,7 +63,7 @@ Bclone_processing <- function(ser){
     DimPlot(ser, pt.size = 2, cells.highlight = singleB_cell) +
     scale_color_manual(labels = c("","single_clone"), values = c("grey", "darkred"))
     
-    DimPlot(ser, pt.size = 2, cells.highlight = bB_cell) +
+    DimPlot(ser, pt.size = 2, cells.highlight = doubleB_cell) +
     scale_color_manual(labels = c("","double_clone"), values = c("grey", "darkblue"))
 
 }
