@@ -25,46 +25,14 @@ process_B <- function(ser, B_dir){
     Bcell_seq = read.table(B_dir, sep = ',', stringsAsFactors = FALSE)$V13
     Bcell_seq = Bcell_seq[2:length(Bcell_seq)]
     Bcell_dt = data.table(Bcell, Bcell_chain, Bcell_seq)
-    Bcell_mx = as.data.table(matrix('NA', ncol = 5, nrow = nrow(unique(Bcell_dt[,1]))), stringAsFactors = FALSE)
-    colnames(Bcell_mx) = c("Bcell", "a_Bchain", "a_Bseq", "b_Bchain", "b_Bseq")
-    rownames(Bcell_mx) = unlist(unique(Bcell_dt[,1]))
-    j = 1
-    dups = ""
 
-    # Organize the B cell TCR matrix
-    for (i in 1:length(rownames(Bcell_dt))){
-        if (is.na(match(Bcell_dt[i, 1], dups))){
-            dups = Bcell_dt[i, 1]
-            Bcell_mx[j,1] = Bcell_dt[i,1]
-            if (Bcell_dt[i,2] == "TRA"){
-                Bcell_mx[j,2] = Bcell_dt[i,2]
-                Bcell_mx[j,3] = Bcell_dt[i,3]
-            }  
-            else if(Bcell_dt[i,2] == "TRB"){
-                Bcell_mx[j,4] = Bcell_dt[i,2]
-                Bcell_mx[j,5] = Bcell_dt[i,3]
-            }
-            j = j + 1
-        }
-        else{
-            if (Bcell_dt[i, 2] == "TRA" & (Bcell_mx[j - 1, 3] == "NA" || Bcell_mx[j - 1, 3] == "None")){
-                Bcell_mx[j - 1,2] = Bcell_dt[i,2]
-                Bcell_mx[j - 1,3] = Bcell_dt[i,3]
-            }  
-            else if(Bcell_dt[i,2] == "TRB" & (Bcell_mx[j - 1, 5] == "NA" || Bcell_mx[j - 1, 5] == "None")){
-                Bcell_mx[j - 1,4] = Bcell_dt[i,2]
-                Bcell_mx[j - 1,5] = Bcell_dt[i,3]
-            }
-        }
-    }
-    
     # Find matching B cell with TCR seq in the seurat obj
     col = colnames(ser@assays$RNA@counts)
     col = sapply(col, function(x){strsplit(x, '-', fixed = TRUE)[[1]][2]})
-    B_ref = as.data.table(matrix('NA', ncol = 5, nrow = length(names(col))))
+    B_ref = as.data.table(matrix('NA', ncol = 3, nrow = length(names(col))))
     for (i in 1:length(col)){
         if (length(which(Bcell_mx[,1] == col[[i]]))){
-            B_ref[i,] = Bcell_mx[which(Bcell_mx[,1] == col[[i]]),]
+            B_ref[i,] = Bcell_mx[which(Bcell_dt[,1] == col[[i]]),]
         }
         else{
             B_ref[i,1] = col[[i]]
