@@ -38,7 +38,7 @@ process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE,
     if(is.null(scale_vars)){scale_vars = c()}
 
     if(!is.null(mt_handle)){
-        mt_genes = grep(mt_handle, rownames(ser))
+        mt_genes = grep(mt_handle, rownames(ser@assays$RNA@counts))
         dat = Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA')
         pct_mt = Matrix::colSums(dat[mt_genes,])/ser$nCount_RNA
         ser$pct_mt = pct_mt
