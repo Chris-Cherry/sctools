@@ -112,8 +112,6 @@ Bclone_processing <- function(ser){
         scale_color_manual(labels = c("Other cells","IgL clone"), values = c("grey", "darkgreen"))
     }else {p3 <- c()}
 
-    CombinePlots(plots = list(p1, p2, p3))
-
     if (nrow(IGH_IGK_clone) != 0){
         IGH_IGK_cell = c()
         for (i in 1:nrow(IGH_IGK_clone)){
@@ -132,6 +130,6 @@ Bclone_processing <- function(ser){
         scale_color_manual(labels = c("Other cells","IgH_IgL clone"), values = c("grey", "darkgreen"))
     }else {p5 <- c()}
 
-    CombinePlots(plots = list(p4, p5))
+    CombinePlots(plots = list(p1,p2,p3,p4,p5))
 
 }
