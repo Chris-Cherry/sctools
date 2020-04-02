@@ -2,7 +2,6 @@
 #' 
 #' Parameters:
 #' @param ser           Seurat object containing T cell information
-#' @param out_dir       Output directory 
 #' 
 #' This script reads in a counts file from either the DropSeq or 10x 
 #' pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object 
@@ -16,7 +15,7 @@
 #' 
 #' @export
 
-Bclone_processing <- function(ser, out_dir = "BCell/"){
+Bclone_processing <- function(ser){
     
     Bcell_mx = as.data.table(matrix('NA', ncol = 5, nrow = ncol(ser)))
     colnames(Bcell_mx) = c("Bcell", "a_Bchain", "a_Bseq", "b_Bchain", "b_Bseq")
@@ -59,8 +58,6 @@ Bclone_processing <- function(ser, out_dir = "BCell/"){
     for (i in 1:nrow(doubleB_clone)){
         doubleB_cell[i] = colnames(ser)[which(doubleB_clone$Bcell[i] == ser@meta.data$Bcell)]
     }
-
-    dir.create(out_dir)
 
     DimPlot(ser, pt.size = 2, cells.highlight = list(singleB_cell, doubleB_cell)) +
     scale_color_manual(labels = c("", "single_clone","double_clone"), values = c("grey", "darkred", "darkblue"))
