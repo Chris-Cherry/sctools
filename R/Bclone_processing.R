@@ -35,7 +35,7 @@ Bclone_processing <- function(ser){
             doubleB_clone[j] <- list(Bcell_mx[which(Bcell_mx[[i,3]] == Bcell_mx[,3]),])
             j = j + 1
         }
-        else{
+        else if(length(which(Bcell_mx[[i,3]] == Bcell_mx[,3])) == 1 & Bcell_mx[[i,3]] != "NA" & Bcell_mx[[i,3]] != "None"){
             singleB_clone[k] <- list(Bcell_mx[i,])
             k = k + 1
         }
