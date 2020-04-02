@@ -57,13 +57,15 @@ Bclone_processing <- function(ser){
         doubleB_cell[i] = colnames(ser)[which(doubleB_clone$Bcell[i] == ser@meta.data$Bcell)]
     }
 
-    DimPlot(ser, pt.size = 2, cells.highlight = list(singleB_cell, doubleB_cell)) +
+    p1 <- DimPlot(ser, pt.size = 2, cells.highlight = list(singleB_cell, doubleB_cell)) +
     scale_color_manual(labels = c("", "single_clone","double_clone"), values = c("grey", "darkred", "darkblue"))
   
-    DimPlot(ser, pt.size = 2, cells.highlight = singleB_cell) +
+    p2 <- DimPlot(ser, pt.size = 2, cells.highlight = singleB_cell) +
     scale_color_manual(labels = c("","single_clone"), values = c("grey", "darkred"))
     
-    DimPlot(ser, pt.size = 2, cells.highlight = doubleB_cell) +
+    p3 <- DimPlot(ser, pt.size = 2, cells.highlight = doubleB_cell) +
     scale_color_manual(labels = c("","double_clone"), values = c("grey", "darkblue"))
+
+    CombinePlots(plots = list(p1, p2, p3))
 
 }
