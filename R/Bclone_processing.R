@@ -17,12 +17,12 @@
 
 Bclone_processing <- function(ser){
     
-    Bcell_mx = as.data.table(matrix('NA', ncol = 5, nrow = ncol(ser)))
-    colnames(Bcell_mx) = c("Bcell", "a_Bchain", "a_Bseq", "b_Bchain", "b_Bseq")
+    Bcell_mx = as.data.table(matrix('NA', ncol = 3, nrow = ncol(ser)))
+    colnames(Bcell_mx) = c("Bcell", "Bcell_chain", "Bcell_seq")
 
     Bcell_mx$Bcell = ser@meta.data$Bcell
-    Bcell_mx$B_chain = ser@meta.data$B_chain
-    Bcell_mx$B_seq = ser@meta.data$B_seq
+    Bcell_mx$Bcell_chain = ser@meta.data$Bcell_chain
+    Bcell_mx$Bcell_seq = ser@meta.data$Bcell_seq
     rownames(Bcell_mx) = colnames(ser)
 
     # Find T cell clone
@@ -43,11 +43,9 @@ Bclone_processing <- function(ser){
 
     singleB_clone = compact(unique(singleB_clone))
     singleB_clone = as.data.frame(do.call(rbind, singleB_clone))
-    rownames(singleB_clone) = singleB_clone[,1]
 
     doubleB_clone = compact(unique(doubleB_clone))
     doubleB_clone = as.data.frame(do.call(rbind, doubleB_clone))
-    rownames(doubleB_clone) = doubleB_clone[,1]
     
     singleB_cell = c()
     for (i in 1:nrow(singleB_clone)){
