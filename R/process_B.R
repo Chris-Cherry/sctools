@@ -31,14 +31,14 @@ process_B <- function(ser, B_dir){
     col = sapply(col, function(x){strsplit(x, '-', fixed = TRUE)[[1]][2]})
     B_ref = as.data.table(matrix('NA', ncol = 3, nrow = length(names(col))))
     for (i in 1:length(col)){
-        if (length(which(Bcell_mx[,1] == col[[i]]))){
-            B_ref[i,] = Bcell_mx[which(Bcell_dt[,1] == col[[i]]),]
+        if (length(which(Bcell_dt[,1] == col[[i]]))){
+            B_ref[i,] = Bcell_dt[i,]
         }
         else{
             B_ref[i,1] = col[[i]]
         }
     }
-    colnames(B_ref) = colnames(Bcell_mx)
+    colnames(B_ref) = colnames(Bcell_dt)
     rownames(B_ref) = colnames(ser@assays$RNA@counts)
     ser = AddMetaData(ser, B_ref)
 
