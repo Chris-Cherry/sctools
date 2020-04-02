@@ -16,12 +16,16 @@
 #' 
 #' @export
 
-Tclone_processing <- function(ser, out_dir = "Cell/"){
+Tclone_processing <- function(ser, out_dir = "TCell/"){
     
     Tcell_mx = as.data.table(matrix('NA', ncol = 5, nrow = ncol(ser)))
     colnames(Tcell_mx) = c("Tcell", "a_Tchain", "a_Tseq", "b_Tchain", "b_Tseq")
 
-    Tcell_mx = cbind(ser@meta.data$Tcell, ser@meta.data$a_Tchain, ser@meta.data$a_Tseq, ser@meta.data$b_Tchain, ser@meta.data$b_Tseq)
+    Tcell_mx$Tcell = ser@meta.data$Tcell
+    Tcell_mx$a_Tchain = ser@meta.data$a_Tchain
+    Tcell_mx$a_Tseq = ser@meta.data$a_Tseq
+    Tcell_mx$b_Tchain = ser@meta.data$b_Tchain
+    Tcell_mx$b_Tseq = ser@meta.data$b_Tseq
     rownames(Tcell_mx) = colnames(ser)
 
     # Find T cell clone
@@ -29,21 +33,28 @@ Tclone_processing <- function(ser, out_dir = "Cell/"){
     bT_clone = list()
     doubleT_clone = list()
     singleT_clone = list()
-
+    j = 1
+    k = 1
+    m = 1
+    n = 1
     for (i in 1:length(rownames(Tcell_mx))){
         if(length(which(Tcell_mx[[i,3]] == Tcell_mx[,3])) > 1 & length(which(Tcell_mx[[i,5]] == Tcell_mx[,5])) > 1 &
             Tcell_mx[[i,3]] != "NA" & Tcell_mx[[i,3]] != "None" & Tcell_mx[[i,5]] != "NA" & Tcell_mx[[i,5]] != "None"
             & length(intersect(which(Tcell_mx[[i,3]] == Tcell_mx[,3]), which(Tcell_mx[[i,5]] == Tcell_mx[,5]))) > 1){
-            doubleT_clone[i] <- list(Tcell_mx[intersect(which(Tcell_mx[[i,3]] == Tcell_mx[,3]), which(Tcell_mx[[i,5]] == Tcell_mx[,5])),])
+            doubleT_clone[j] <- list(Tcell_mx[intersect(which(Tcell_mx[[i,3]] == Tcell_mx[,3]), which(Tcell_mx[[i,5]] == Tcell_mx[,5])),])
+            j = j + 1
         }
         else if(length(which(Tcell_mx[[i,3]] == Tcell_mx[,3])) > 1 & Tcell_mx[i,3] != "NA" & Tcell_mx[i,3] != "None"){
-            aT_clone[i] <- list(Tcell_mx[which(Tcell_mx[[i,3]] == Tcell_mx[,3] & (Tcell_mx[[i,5]] == "NA" || Tcell_mx[[i,5]] == "None")),])
+            aT_clone[k] <- list(Tcell_mx[which(Tcell_mx[[i,3]] == Tcell_mx[,3]),])
+            k = k + 1
         }
         else if(length(which(Tcell_mx[[i,5]] == Tcell_mx[,5])) > 1 & Tcell_mx[i,5] != "NA" & Tcell_mx[i,5] != "None"){
-            bT_clone[i] <- list(Tcell_mx[which(Tcell_mx[[i,5]] == Tcell_mx[,5] & (Tcell_mx[[i,3]] == "NA" || Tcell_mx[[i,3]] == "None")),])
+            bT_clone[m] <- list(Tcell_mx[which(Tcell_mx[[i,5]] == Tcell_mx[,5]),])
+            m = m + 1
         }
         else{
-            singleT_clone[i] <- list(Tcell_mx[i,])
+            singleT_clone[n] <- list(Tcell_mx[i,])
+            n = n + 1
         }
     }
 
@@ -69,20 +80,26 @@ Tclone_processing <- function(ser, out_dir = "Cell/"){
     doubleT_clone = as.data.frame(do.call(rbind, doubleT_clone))
     rownames(doubleT_clone) = doubleT_clone[,1]
 
-    aT_cell = WhichCells(ser, cells = names(aT_clone$V1))
-    bT_cell = WhichCells(ser, cells = names(bT_clone$V1))
-    doubleT_cell = WhichCells(ser, cells = names(doubleT_clone$V1))  
+    aT_cell = c()
+    for (i in 1:nrow(aT_clone)){
+        aT_cell[i] = colnames(ser)[which(aT_clone$Tcell[i] == ser@meta.data$Tcell)]
+    }
+    
+    bT_cell = c()
+    for (i in 1:nrow(bT_clone)){
+        bT_cell[i] = colnames(ser)[which(bT_clone$Tcell[i] == ser@meta.data$Tcell)]
+    }
+
+    doubleT_cell = c()
+    for (i in 1:nrow(doubleT_clone)){
+        doubleT_cell[i] = colnames(ser)[which(doubleT_clone$Tcell[i] == ser@meta.data$Tcell)]
+    }
 
     dir.create(out_dir)
 
-    pdf(paste0(out_dir, "T_dim_plots.pdf"))
-
     DimPlot(ser, pt.size = 2, cells.highlight = list(aT_cell, bT_cell, doubleT_cell)) +
     scale_color_manual(labels = c("", "a_clone","b_clone","ab_clone"), values = c("grey", "darkred", "darkblue", "darkgreen"))
-
-    DimPlot(ser, pt.size = 2, cells.highlight = list(aT_cell, bT_cell, doubleT_cell)) +
-    scale_color_manual(labels = c("", "a_clone","b_clone","ab_clone"), values = c("grey", "darkred", "darkblue", "darkgreen"))
-    
+  
     DimPlot(ser, pt.size = 2, cells.highlight = aT_cell) +
     scale_color_manual(labels = c("","a_clone"), values = c("grey", "darkred"))
     
@@ -92,5 +109,4 @@ Tclone_processing <- function(ser, out_dir = "Cell/"){
     DimPlot(ser, pt.size = 2, cells.highlight = doubleT_cell) +
     scale_color_manual(labels = c("","ab_clone"), values = c("grey", "darkgreen"))
 
-    dev.off()
 }
