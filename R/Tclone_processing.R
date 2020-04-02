@@ -98,7 +98,7 @@ Tclone_processing <- function(ser){
     }else{p2<-c()}
 
 
-    if (nrow(doubleT_cell) !=0){
+    if (nrow(doubleT_clone) !=0){
         doubleT_cell = c()
         for (i in 1:nrow(doubleT_clone)){
             doubleT_cell[i] = colnames(ser)[which(doubleT_clone$Tcell[i] == ser@meta.data$Tcell)]
