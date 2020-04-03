@@ -130,6 +130,6 @@ Bclone_processing <- function(ser){
         scale_color_manual(labels = c("Other cells","IgH_IgL clone"), values = c("grey", "darkgreen"))
     }else {p5 <- c()}
 
-    CombinePlots(plots = list(p1,p2,p3,p4,p5))
+    CombinePlots(plots = list(p1,p2,p3,p4,p5), ncol = 2)
 
 }
