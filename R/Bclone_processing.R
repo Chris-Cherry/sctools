@@ -89,8 +89,8 @@ Bclone_processing <- function(ser){
         for (i in 1:nrow(single_IGH_clone)){
         single_IGH_cell[i] = colnames(ser)[which(single_IGH_clone$Bcell[i] == ser@meta.data$Bcell)]
         }
-        p1 <- DimPlot(ser, pt.size = 0.5, cells.highlight = single_IGH_cell) +
-        scale_color_manual(labels = c("Other cells","IgH clone"), values = c("grey", "darkred"))
+        p1 <- DimPlot(ser, pt.size = 1, cells.highlight = single_IGH_cell, sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","IgH clone"), values = c("grey", "darkred")) + theme(legend.text = element_text(size = 10))
     }else{p1 <- c()}
    
 
@@ -99,8 +99,8 @@ Bclone_processing <- function(ser){
         for (i in 1:nrow(single_IGK_clone)){
             single_IGK_cell[i] = colnames(ser)[which(single_IGK_clone$Bcell[i] == ser@meta.data$Bcell)]
         }
-        p2 <- DimPlot(ser, pt.size = 0.5, cells.highlight = single_IGK_cell) +
-        scale_color_manual(labels = c("Other cells","IgK clone"), values = c("grey", "darkblue"))
+        p2 <- DimPlot(ser, pt.size = 1, cells.highlight = single_IGK_cell , sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","IgK clone"), values = c("grey", "darkblue")) + theme(legend.text = element_text(size = 10))
     }else {p2 <- c()}
    
     if (nrow(single_IGL_clone) != 0){
@@ -108,8 +108,8 @@ Bclone_processing <- function(ser){
         for (i in 1:nrow(single_IGL_clone)){
             single_IGL_cell[i] = colnames(ser)[which(single_IGL_clone$Bcell[i] == ser@meta.data$Bcell)]
         }
-        p3 <- DimPlot(ser, pt.size = 0.5, cells.highlight = single_IGL_cell) +
-        scale_color_manual(labels = c("Other cells","IgL clone"), values = c("grey", "darkgreen"))
+        p3 <- DimPlot(ser, pt.size = 1, cells.highlight = single_IGL_cell, sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","IgL clone"), values = c("grey", "darkgreen")) + theme(legend.text = element_text(size = 10))
     }else {p3 <- c()}
 
     if (nrow(IGH_IGK_clone) != 0){
@@ -117,8 +117,8 @@ Bclone_processing <- function(ser){
         for (i in 1:nrow(IGH_IGK_clone)){
             IGH_IGK_cell[i] = colnames(ser)[which(IGH_IGK_clone$Bcell[i] == ser@meta.data$Bcell)]
         }
-        p4 <- DimPlot(ser, pt.size = 0.5, cells.highlight = IGH_IGK_cell) +
-        scale_color_manual(labels = c("Other cells","IgH_IgK clone"), values = c("grey", "darkblue"))
+        p4 <- DimPlot(ser, pt.size = 1, cells.highlight = IGH_IGK_cell, sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","IgH_IgK clone"), values = c("grey", "blue")) + theme(legend.text = element_text(size = 10))
     }else {p4 <- c()}
    
     if (nrow(IGH_IGL_clone) != 0){
@@ -126,8 +126,8 @@ Bclone_processing <- function(ser){
         for (i in 1:nrow(IGH_IGL_clone)){
             IGH_IGL_cell[i] = colnames(ser)[which(IGH_IGL_clone$Bcell[i] == ser@meta.data$Bcell)]
         }
-        p5 <- DimPlot(ser, pt.size = 0.5, cells.highlight = IGH_IGL_cell) +
-        scale_color_manual(labels = c("Other cells","IgH_IgL clone"), values = c("grey", "darkgreen"))
+        p5 <- DimPlot(ser, pt.size = 1, cells.highlight = IGH_IGL_cell, sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","IgH_IgL clone"), values = c("grey", "green")) + theme(legend.text = element_text(size = 10))
     }else {p5 <- c()}
 
     CombinePlots(plots = list(p1,p2,p3,p4,p5), ncol = 2)

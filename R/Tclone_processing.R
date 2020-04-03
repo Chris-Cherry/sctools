@@ -83,8 +83,8 @@ Tclone_processing <- function(ser){
         aT_cell = c()
         for (i in 1:nrow(aT_clone)){
             aT_cell[i] = colnames(ser)[which(aT_clone$Tcell[i] == ser@meta.data$Tcell)]
-            p1 <- DimPlot(ser, pt.size = 0.5, cells.highlight = aT_cell) +
-            scale_color_manual(labels = c("","a_clone"), values = c("grey", "darkred"))
+            p1 <- DimPlot(ser, pt.size = 1, cells.highlight = aT_cell, sizes.highlight = 0.5) +
+            scale_color_manual(labels = c("Other cells","a_clone"), values = c("grey", "darkred")) + theme(legend.text = element_text(size = 10))
         }
     }else{p1<-c()}
     
@@ -93,8 +93,8 @@ Tclone_processing <- function(ser){
         for (i in 1:nrow(bT_clone)){
             bT_cell[i] = colnames(ser)[which(bT_clone$Tcell[i] == ser@meta.data$Tcell)]
         }
-        p2 <- DimPlot(ser, pt.size = 0.5, cells.highlight = bT_cell) +
-        scale_color_manual(labels = c("","b_clone"), values = c("grey", "darkblue"))
+        p2 <- DimPlot(ser, pt.size = 1, cells.highlight = bT_cell, sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","b_clone"), values = c("grey", "darkblue")) + theme(legend.text = element_text(size = 10))
     }else{p2<-c()}
 
 
@@ -103,8 +103,8 @@ Tclone_processing <- function(ser){
         for (i in 1:nrow(doubleT_clone)){
             doubleT_cell[i] = colnames(ser)[which(doubleT_clone$Tcell[i] == ser@meta.data$Tcell)]
         }
-        p3 <- DimPlot(ser, pt.size = 0.5, cells.highlight = doubleT_cell) +
-        scale_color_manual(labels = c("","ab_clone"), values = c("grey", "darkgreen"))
+        p3 <- DimPlot(ser, pt.size = 1, cells.highlight = doubleT_cell, sizes.highlight = 0.5) +
+        scale_color_manual(labels = c("Other cells","ab_clone"), values = c("grey", "darkgreen")) + theme(legend.text = element_text(size = 10))
     }else{p3<-c()}
      
     CombinePlots(plots = list(p1, p2, p3))
