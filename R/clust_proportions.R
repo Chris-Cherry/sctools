@@ -12,7 +12,7 @@
 #' @import grDevices
 #'
 
-clust_proportions = function(ser, meta, pdf, csv, cols){
+clust_proportions = function(ser, meta, pdf, csv, cols, cluster_enrichment_pvals){
 
     # Start by generating null distribution for idents
     n = length(Seurat::Idents(ser))
