@@ -19,6 +19,8 @@ clust_proportions(ser, meta, pdf, csv, cols)
 \item{pdf}{Name of output pdf file}
 
 \item{csv}{Name of output csv to save cell numbers by cluster/meta}
+
+\item{cluster_enrichment_pvals}{Whether to calculate pvals}
 }
 \description{
 Creates cluster proportions and plots from metadata.

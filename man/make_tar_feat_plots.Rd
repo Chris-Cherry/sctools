@@ -4,7 +4,13 @@
 \alias{make_tar_feat_plots}
 \title{Make violin and feature plots for a given set of features}
 \usage{
-make_tar_feat_plots(ser, features, out_dir = "2_de", prefix = "tar_features")
+make_tar_feat_plots(
+  ser,
+  features,
+  out_dir = "2_de",
+  prefix = "tar_features",
+  use_phate = TRUE
+)
 }
 \arguments{
 \item{ser}{Seurat file to use for plots}
@@ -12,6 +18,8 @@ make_tar_feat_plots(ser, features, out_dir = "2_de", prefix = "tar_features")
 \item{features}{Vector of features to make plots for}
 
 \item{out_dir}{Directory to write plots}
+
+\item{use_phate}{Boolean indicating whether to use phate dimensional reductions}
 }
 \description{
 This function accepts a Seurat object and a vector of features to create

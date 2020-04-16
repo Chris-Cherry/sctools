@@ -10,10 +10,11 @@
 #' @param ser           Seurat file to use for plots
 #' @param features      Vector of features to make plots for
 #' @param out_dir       Directory to write plots
+#' @param use_phate     Boolean indicating whether to use phate dimensional reductions
 #' @export
 
 make_tar_feat_plots <- function(ser, features, out_dir = '2_de', 
-	prefix = 'tar_features'){
+	prefix = 'tar_features', use_phate = TRUE){
     dir.create(out_dir)
     prefix = paste(out_dir, prefix, sep = '/')
     tmp = ser
@@ -36,13 +37,29 @@ make_tar_feat_plots <- function(ser, features, out_dir = '2_de',
         png(paste0(prefix, '_feature_plot_', i, '.png'), height = 2000, 
             width = 2000)
         suppressWarnings(print(Seurat::FeaturePlot(ser, features = set, 
-            ncol = 3, cols = fp_cols)))
+            ncol = 3, cols = fp_cols, reduction = 'umap')))
         dev.off()
 
         png(paste0(prefix, '_feature_plot_', i, '_q10.png'), height = 2000, 
             width = 2000)
         suppressWarnings(print(Seurat::FeaturePlot(ser, features = set, ncol = 3, 
-            min.cutoff = 'q10', max.cutoff = 'q90', cols = fp_cols)))
+            min.cutoff = 'q10', max.cutoff = 'q90', cols = fp_cols, 
+            reduction = 'umap')))
         dev.off()
+
+        if(use_phate){
+            png(paste0(prefix, '_feature_plot_', i, '_phate.png'), height = 2000, 
+                width = 2000)
+            suppressWarnings(print(Seurat::FeaturePlot(ser, features = set, 
+                ncol = 3, cols = fp_cols, reduction = 'phate')))
+            dev.off()
+
+            png(paste0(prefix, '_feature_plot_', i, '_q10_phate.png'), height = 2000, 
+                width = 2000)
+            suppressWarnings(print(Seurat::FeaturePlot(ser, features = set, ncol = 3, 
+                min.cutoff = 'q10', max.cutoff = 'q90', cols = fp_cols, 
+                reduction = 'phate')))
+            dev.off()
+        }
     }
 }
