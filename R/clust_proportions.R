@@ -8,6 +8,7 @@
 #' @param meta          Name of metadata in ser object to get cluster proportions
 #' @param csv           Name of output csv to save cell numbers by cluster/meta
 #' @param pdf           Name of output pdf file
+#' @param cluster_enrichment_pvals Whether to calculate pvals
 #' @import grDevices
 #'
 
@@ -31,40 +32,42 @@ clust_proportions = function(ser, meta, pdf, csv, cols){
         cell_ids = which(Seurat::Idents(ser) == clust)
         comps = table(ser[[meta]][cell_ids,])
         clust_comps = rbind(clust_comps, comps)
-        # Calculate P vals for the clust comps
-        tables = matrix(0, ncol = length(levels(ser[[meta]][,1])), nrow = perms)
-        for(i in 1:perms){
-            cells = colnames(perm_idents)[which(perm_idents[i,] == clust)]
-            table = table(ser[[meta]][cells,])
-            tables[i,] = table
-        }
-        colnames(tables) = names(table)
-        pvals = c()
-        for(col in colnames(tables)){
-            ngreater = sum(tables[,col] > comps[col])
-            nless = sum(tables[,col] < comps[col])
-            if(nless < ngreater){
-                p = nless*2/perms
-            }else{
-                p = ngreater*2/perms
-            }
-            pvals[col] = p
-        }
 
         # While we're here lets make pie charts
         # Normalize data to cell totals
         comps = comps/meta_totals
         temp = data.frame(comps)
-        pval_names = paste(names(pvals), pvals, sep = ':')
         plot = ggplot2::ggplot(temp, ggplot2::aes(x="", y=Freq, fill=Var1)) +
             ggplot2::geom_bar(width=1, stat="identity") +
-            ggplot2::labs(title = clust, subtitle = paste(pval_names, collapse = ' ')) +
+            ggplot2::labs(title = clust) +
             ggplot2::theme_void()
+        if(cluster_enrichment_pvals){
+            # Calculate P vals for the clust comps
+            tables = matrix(0, ncol = length(levels(ser[[meta]][,1])), nrow = perms)
+            for(i in 1:perms){
+                cells = colnames(perm_idents)[which(perm_idents[i,] == clust)]
+                table = table(ser[[meta]][cells,])
+                tables[i,] = table
+            }
+            colnames(tables) = names(table)
+            pvals = c()
+            for(col in colnames(tables)){
+                ngreater = sum(tables[,col] > comps[col])
+                nless = sum(tables[,col] < comps[col])
+                if(nless < ngreater){
+                    p = nless*2/perms
+                }else{
+                    p = ngreater*2/perms
+                }
+                pvals[col] = p
+            }
+            pval_names = paste(names(pvals), pvals, sep = ':')
+            plot = plot + ggplot2::labs(subtitle = paste(pval_names, collapse = ' '))
+        }
 
         if(!is.null(cols)){
             plot = plot + ggplot2::scale_fill_manual(values = cols[names(comps)])
         } 
-
 
         # Pie chart:
         plot = plot + ggplot2::coord_polar('y', start=0)

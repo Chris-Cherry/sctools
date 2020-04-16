@@ -4,6 +4,7 @@
 #' @param out_dir       Output directory
 #' @param colors        Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
 #' @param use_phate     Boolean indicating whether to use phate dimensional reduction for plots.  
+#' @param cluster_enrichment_pvals  Boolean indicating whether to calculate P values for clusters by metadata.
 #' Creates a number of plots and csv files relating to cluster composition
 #' by all metadata in the ser object. This includes dim plots, feature plots,
 #' and pie plots for cluster composition. Point size is automatically scaled
@@ -13,7 +14,8 @@
 #' @import grDevices
 #' @export
 
-make_processing_plots <- function(ser, out_dir = '1_process/', colors = NULL, use_phate = TRUE){
+make_processing_plots <- function(ser, out_dir = '1_process/', colors = NULL, 
+    use_phate = TRUE, cluster_enrichment_pvals = FALSE){
 
     dir.create(out_dir)
     if(ncol(ser) < 5000){
@@ -96,7 +98,7 @@ make_processing_plots <- function(ser, out_dir = '1_process/', colors = NULL, us
             clust_proportions(ser, meta, 
                 paste0(out_dir, '/', meta, '_proportions.pdf'),
                 paste0(out_dir, '/', meta, '_proportions.csv'),
-                cols)           
+                cols, cluster_enrichment_pvals)           
         }
         if(class(ser[[meta]][,1]) == 'numeric'){
             png(paste0(out_dir, '/', meta, '_umap_feature.png'),
