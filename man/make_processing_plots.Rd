@@ -5,15 +5,24 @@
 \title{Make default plot array associated with processing step.
 Parameters:}
 \usage{
-make_processing_plots(ser, out_dir = "1_process/", colors = NULL)
+make_processing_plots(
+  ser,
+  out_dir = "1_process/",
+  colors = NULL,
+  use_phate = TRUE,
+  cluster_enrichment_pvals = FALSE
+)
 }
 \arguments{
 \item{ser}{Seurat object to process.}
 
 \item{out_dir}{Output directory}
 
-\item{colors}{Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
-  
+\item{colors}{Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.}
+
+\item{use_phate}{Boolean indicating whether to use phate dimensional reduction for plots.}
+
+\item{cluster_enrichment_pvals}{Boolean indicating whether to calculate P values for clusters by metadata.
 Creates a number of plots and csv files relating to cluster composition
 by all metadata in the ser object. This includes dim plots, feature plots,
 and pie plots for cluster composition. Point size is automatically scaled
