@@ -17,13 +17,15 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
     feature_plots = TRUE, meta = NULL){
     fp_cols = c("#2c7bb6", "#00a6ca", "#00ccbc", "#90eb9d", "#ffff8c", "#f9d057",
         "#f29e2e", "#e76818", "#d7191c")
+    out_tmp = out_dir
 
     # Process each cluster
     if (!is.null(list_ser)){
         DefaultAssay(list_ser[[1]]) = 'RNA'
         
         for (i in meta){
-            out_dir = paste0('2_de/cluster_', i, '/')
+            out_dir = out_tmp
+            out_dir = paste0(out_dir, '/cluster_', i, '/')
             submarks = readRDS(paste0(out_dir, '/submarks_', i, '.RDS'))
             top10 = submarks %>% group_by(cluster) %>% top_n(10, avg_logFC)
             if (any(submarks$avg_logFC > 1) == TRUE)

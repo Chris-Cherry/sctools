@@ -5,17 +5,17 @@
 #'                      If NULL then will run on all genes
 #' @param out_dir       Directory to write plots and save markers.
 #' @param meta          (Optional) Pass in cluster name that user wants to run DE
-#' @param res           (Optional) Resolution for clustering in each subset
 #' @param origin        (Optional) Pass in what parameters in the each clusters that user wants to run DE
 #' @import grDevices
 #' @import Seurat
 #' @import dplyr
 #' @importFrom dplyr %>% 
-#' @return              Output a processed differenttial expression for plotting
+#' @return              Output a processed differential expression for plotting
 #' @export
 
 run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = 'Condition'){
     dir.create(out_dir)
+    out_tmp = out_dir
 
     # Run DE on whole dataset based on the meta data
     if(is.null(feats)){feats = rownames(ser)}
@@ -24,14 +24,15 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = '
     # Run DE on each cluster
     if (!is.null(meta)){
         for(clust in meta){
+            out_dir = out_tmp
             subser = subset(ser, idents = clust)
             Idents(subser) = subser@meta.data[origin]
-            out_dir = paste0('2_de/cluster_', clust, '/')
+            out_dir = paste0(out_dir, '/cluster_', clust, '/')
             dir.create(out_dir)
             sub_marks = FindAllMarkers(subser, features = feats, logfc.thresh = 0,
                 return.thresh = Inf, assay = 'RNA', verbose = FALSE)
             saveRDS(sub_marks, paste0(out_dir, 'submarks_', clust,'.RDS'))
-            ser_list[[j]] <- subser
+            ser_list[[clust]] <- subser
             j = j + 1
 
             for(clust in levels(Idents(subser))){
