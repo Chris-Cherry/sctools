@@ -1,5 +1,5 @@
 #' Runs differential expression and creates relevant plots for a ser object
-#' Parameters:
+#' 
 #' @param ser           The Seurat object to use
 #' @param list_ser      List of DE seurat object 
 #' @param feats         A subset of featurs to run DE (I.E. only surface markers)
@@ -8,9 +8,10 @@
 #' @param cols          Name vector of colors by cluster
 #' @param feature_plots Whether or not to include feature plots in the pdf output.
 #' @param meta          subset that you want to graph
-#' @import dplyr
-#' @import future
 #' @importFrom dplyr %>%
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
+#' @return Creates plots in user inputted directory
 #' @export
 
 make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '2_de/', cols = NULL,
@@ -45,7 +46,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
             dev.off()
 
             smallest = min(table(Idents(list_ser[[i]])))
-            subser = subset(list_ser[[i]], downsample = smallest*3)
+            subser = Seurat::subset(list_ser[[i]], downsample = smallest*3)
 
             png(paste0(out_dir, '/heatmap_trim_cell_', i, '.png'), height = 2000, width = 2000)
             print(Seurat::DoHeatmap(subser, top_all$gene, assay = 'RNA', raster = FALSE, 
@@ -72,7 +73,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
     }
     else if(!is.null(ser)){
     # Process the whole dataset
-        DefaultAssay(ser) = 'RNA'
+        Seurat::DefaultAssay(ser) = 'RNA'
         marks = readRDS(paste0(out_dir, '/marks.RDS'))
         top10 = marks %>% group_by(cluster) %>% top_n(10, avg_logFC)
         top_all = marks[which(marks$avg_logFC > 1),]
@@ -88,7 +89,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
         dev.off()
 
         smallest = min(table(Idents(ser)))
-        subser = subset(ser, downsample = smallest*3)
+        subser = Seurat::subset(ser, downsample = smallest*3)
 
         png(paste0(out_dir, '/heatmap_trim_cell.png'), height = 2000, width = 2000)
         print(Seurat::DoHeatmap(subser, top_all$gene, assay = 'RNA', raster = FALSE, 

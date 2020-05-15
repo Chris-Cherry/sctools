@@ -1,18 +1,17 @@
-#' This file process B cell clonality. 
-#' 
-#' Parameters:
-#' @param ser           Seurat object containing T cell information
-#' 
+#' Process B cell clonality
+#'
 #' This script reads in a counts file from either the DropSeq or 10x 
 #' pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object 
+#'
+#' @param ser           Seurat object containing T cell information
 #' 
 #' @import Seurat
-#' @import Matrix
-#' @import methods
-#' @import plyr
-#' @import utils
+#' @importFrom data.table as.data.table
+#' @importFrom plyr compact
 #' @import ggplot2
 #' 
+#' @return Feature plots highlighting clones
+#'
 #' @export
 
 Bclone_processing <- function(ser){

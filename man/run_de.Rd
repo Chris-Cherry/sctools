@@ -2,8 +2,7 @@
 % Please edit documentation in R/run_de.R
 \name{run_de}
 \alias{run_de}
-\title{Runs differential expression and creates relevant plots for a ser object
-Parameters:}
+\title{Runs differential expression for a ser object}
 \usage{
 run_de(ser, feats = NULL, out_dir = "2_de/", meta = NULL, origin = "Condition")
 }
@@ -18,13 +17,11 @@ If NULL then will run on all genes}
 \item{meta}{(Optional) Pass in cluster name that user wants to run DE}
 
 \item{origin}{(Optional) Pass in what parameters in the each clusters that user wants to run DE}
-
-\item{res}{(Optional) Resolution for clustering in each subset}
 }
 \value{
-Output a processed differenttial expression for plotting
+Output a processed differential expression for plotting
 }
 \description{
-Runs differential expression and creates relevant plots for a ser object
-Parameters:
+Creates object used in make_de_plots function for the creation of various plots.
+Can be used on whole data set or individual clusters.
 }

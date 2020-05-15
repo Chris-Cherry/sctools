@@ -1,16 +1,17 @@
 #' Make default plot array associated with processing step.
-#' Parameters:
-#' @param ser           Seurat object to process.
-#' @param out_dir       Output directory
-#' @param colors        Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
-#' @param use_phate     Boolean indicating whether to use phate dimensional reduction for plots.  
-#' @param cluster_enrichment_pvals  Boolean indicating whether to calculate P values for clusters by metadata.
+#'
 #' Creates a number of plots and csv files relating to cluster composition
 #' by all metadata in the ser object. This includes dim plots, feature plots,
 #' and pie plots for cluster composition. Point size is automatically scaled
 #' based on total number of cells and 10%/90% quantiles are used for all
 #' feature plots. Reductions used are umap and phate.
 #'
+#' @param ser           Seurat object to process.
+#' @param out_dir       Output directory
+#' @param colors        Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
+#' @param use_phate     Boolean indicating whether to use phate dimensional reduction for plots.  
+#' @param cluster_enrichment_pvals  Boolean indicating whether to calculate P values for clusters by metadata.
+#' @return Makes plots in user inputed directory
 #' @import grDevices
 #' @export
 

@@ -1,5 +1,7 @@
-#' Runs differential expression and creates relevant plots for a ser object
-#' Parameters:
+#' Runs differential expression for a ser object
+#'
+#' Creates object used in make_de_plots function for the creation of various plots.
+#' Can be used on whole data set or individual clusters.
 #' @param ser           The Seurat object to use
 #' @param feats         A subset of featurs to run DE (I.E. only surface markers)
 #'                      If NULL then will run on all genes
@@ -8,7 +10,7 @@
 #' @param origin        (Optional) Pass in what parameters in the each clusters that user wants to run DE
 #' @import grDevices
 #' @import Seurat
-#' @import dplyr
+#' @importFrom utils write.table
 #' @importFrom dplyr %>% 
 #' @return              Output a processed differential expression for plotting
 #' @export

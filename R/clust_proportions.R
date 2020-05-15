@@ -1,4 +1,5 @@
 #' Creates cluster proportions and plots from metadata.
+#'
 #' Creates a pdf of pie charts (one for each cluster with proportions from 
 #' the given metadata) and a csv of raw cell numbers by cluster and metadata.
 #' It also uses a permutation based test to determine statistical enrichment
@@ -8,9 +9,9 @@
 #' @param meta          Name of metadata in ser object to get cluster proportions
 #' @param csv           Name of output csv to save cell numbers by cluster/meta
 #' @param pdf           Name of output pdf file
-#' @param cluster_enrichment_pvals Whether to calculate pvals
+#' @param cluster_enrichment_pvals Boolean for whether to calculate pvals
 #' @import grDevices
-#'
+#' @importFrom utils write.table
 
 clust_proportions = function(ser, meta, pdf, csv, cols, cluster_enrichment_pvals){
 

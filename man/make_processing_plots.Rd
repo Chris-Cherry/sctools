@@ -2,8 +2,7 @@
 % Please edit documentation in R/make_processing_plots.R
 \name{make_processing_plots}
 \alias{make_processing_plots}
-\title{Make default plot array associated with processing step.
-Parameters:}
+\title{Make default plot array associated with processing step.}
 \usage{
 make_processing_plots(
   ser,
@@ -22,14 +21,15 @@ make_processing_plots(
 
 \item{use_phate}{Boolean indicating whether to use phate dimensional reduction for plots.}
 
-\item{cluster_enrichment_pvals}{Boolean indicating whether to calculate P values for clusters by metadata.
+\item{cluster_enrichment_pvals}{Boolean indicating whether to calculate P values for clusters by metadata.}
+}
+\value{
+Makes plots in user inputed directory
+}
+\description{
 Creates a number of plots and csv files relating to cluster composition
 by all metadata in the ser object. This includes dim plots, feature plots,
 and pie plots for cluster composition. Point size is automatically scaled
 based on total number of cells and 10%/90% quantiles are used for all
-feature plots. Reductions used are umap and phate.}
-}
-\description{
-Make default plot array associated with processing step.
-Parameters:
+feature plots. Reductions used are umap and phate.
 }

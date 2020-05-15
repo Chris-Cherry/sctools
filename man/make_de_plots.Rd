@@ -2,8 +2,7 @@
 % Please edit documentation in R/make_de_plots.R
 \name{make_de_plots}
 \alias{make_de_plots}
-\title{Runs differential expression and creates relevant plots for a ser object
-Parameters:}
+\title{Runs differential expression and creates relevant plots for a ser object}
 \usage{
 make_de_plots(
   ser = NULL,
@@ -31,7 +30,9 @@ If NULL then will run on all genes}
 
 \item{meta}{subset that you want to graph}
 }
+\value{
+Creates plots in user inputted directory
+}
 \description{
 Runs differential expression and creates relevant plots for a ser object
-Parameters:
 }

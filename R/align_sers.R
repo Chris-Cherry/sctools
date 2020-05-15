@@ -8,14 +8,7 @@
 #' 
 #' @return Integrated Seurat object with mnn components as pca reduction.
 #' @import Seurat
-#' @import batchelor
-#' @import scran
-#' @import phateR
-#' @import rgl
-#' @import SingleCellExperiment
-#' @import Matrix
-#' @import scater
-#' 
+#' @importFrom utils read.table
 #' @export
  
 align_sers = function(sers, meta_file = 'metadata.csv', ref = NULL){

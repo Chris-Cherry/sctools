@@ -1,18 +1,14 @@
 #' This file process T cell clonality. 
-#' 
-#' Parameters:
-#' @param ser           Seurat object containing T cell information
-#' 
+#'
 #' This script reads in a counts file from either the DropSeq or 10x 
 #' pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object 
 #' 
+#' @param ser           Seurat object containing T cell information
+#'
 #' @import Seurat
-#' @import Matrix
-#' @import methods
-#' @import plyr
-#' @import utils
-#' @import ggplot2
-#' 
+#' @importFrom plyr compact
+#' @importFrom data.table as.data.table
+#' @return Feature plots highlighting clones
 #' @export
 
 Tclone_processing <- function(ser){

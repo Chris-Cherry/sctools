@@ -1,3 +1,5 @@
+#' Sort matrix by Seurat metadata
+#' 
 #' Organizes matrix of values associated with cells in a Seurat object 
 #' by specified metadata
 #'

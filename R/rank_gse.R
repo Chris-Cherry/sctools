@@ -1,4 +1,4 @@
-#' Parameters:
+#' This function will perform fast preranked gene set encrichment analysis
 #' 
 #' @param directory     Directory to get gmt file
 #' @param rank_data     This can be a Directory to get RDS file or directly passing in dataframe
@@ -8,7 +8,6 @@
 #' @param cluster_name  Cluster name that user want to do the geneset analysis on
 #' @param to_gene       "MGI" or HGNC
 #' 
-#' This function will perform fast preranked gene set encrichment analysis
 #' 
 #' @return  Outputs dataframe from fgsea function
 #' @export

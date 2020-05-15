@@ -1,3 +1,17 @@
+#' Convert genes between symbol types
+#'
+#' Takes an input of genes and converts from inputed type to desired type
+#' 
+#' @param genes The genes to convert.
+#' @param from  Gene symbol type of the input
+#' @param to    Desired gene symbol type for the output
+#' @importFrom biomaRt useMart
+#' @importFrom biomaRt getLDS
+#'
+#' @return Data frame of genes with original and corresponding converted symbols
+#' @export
+
+
 convert_genes <- function(genes, from, to){
     if (from == 'ENSMUSG'){
         srcMart = biomaRt::useMart("ensembl", dataset = "mmusculus_gene_ensembl")

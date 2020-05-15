@@ -11,6 +11,10 @@
 #' @param features      Vector of features to make plots for
 #' @param out_dir       Directory to write plots
 #' @param use_phate     Boolean indicating whether to use phate dimensional reductions
+#' @import Seurat
+#' @importFrom grDevices png
+#' @importFrom grDevices pdf
+#' @importFrom grDevices dev.off
 #' @export
 
 make_tar_feat_plots <- function(ser, features, out_dir = '2_de', 

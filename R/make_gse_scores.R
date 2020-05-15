@@ -1,4 +1,10 @@
 #' Makes gene set enrichment scores by cell
+#'
+#' This function will read in the gene sets from an existing list, gmt file, 
+#' or csv file and score cells based on scaled gene expression. The results 
+#' will be appended to the set_scores assay in the provided Seurat object or 
+#' the assay will be created.
+#'
 #' @param directory     Directory to get gmt file
 #' @param gene_sets    User defined subset of gene set (Optional) 
 #' @param ser           Seurat object to process
@@ -6,14 +12,11 @@
 #' @param type          Output score in Absolute or Real values
 #' @param from_gene     "ENSG" or "ENSMUSG" or "HGNC" or "MGI"             
 #' @param to_gene       "MGI" or "HGNC"
-#' 
-#' This function will read in the gene sets from an existing list, gmt file, 
-#' or csv file and score cells based on scaled gene expression. The results 
-#' will be appended to the set_scores assay in the provided Seurat object or 
-#' the assay will be created.
-#' 
-#' @import dplyr
+#' @importFrom fgsea gmtPathways
 #' @importFrom dplyr %>%
+#' @importFrom Matrix colMeans
+#' @importFrom utils read.table
+#' @importFrom stats na.omit
 #' @return  Outputs seurat object
 #' @export
 

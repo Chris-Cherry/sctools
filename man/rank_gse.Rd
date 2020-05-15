@@ -2,7 +2,7 @@
 % Please edit documentation in R/rank_gse.R
 \name{rank_gse}
 \alias{rank_gse}
-\title{Parameters:}
+\title{This function will perform fast preranked gene set encrichment analysis}
 \usage{
 rank_gse(
   directory,
@@ -23,9 +23,7 @@ rank_gse(
 
 \item{from_gene}{"ENSG" or "ENSMUSG" or "HGNC" or "MGI"}
 
-\item{to_gene}{"MGI" or HGNC
-
-This function will perform fast preranked gene set encrichment analysis}
+\item{to_gene}{"MGI" or HGNC}
 
 \item{cluster_name}{Cluster name that user want to do the geneset analysis on}
 
@@ -35,5 +33,5 @@ This function will perform fast preranked gene set encrichment analysis}
 Outputs dataframe from fgsea function
 }
 \description{
-Parameters:
+This function will perform fast preranked gene set encrichment analysis
 }

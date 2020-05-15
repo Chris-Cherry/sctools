@@ -1,7 +1,9 @@
-#' Averages values from a matrix based on selected metadata from Seurat object.
-#' Matrix input should be output from organize_scores.
+#'Average matrix by metadata
+#' 
+#'Averages values from a matrix based on selected metadata from Seurat object.
 #'
 #' @param scores    Matrix of scores organized by metadata (output from organize_scores)
+#' @param ser       Seurat object containing metadata and cell names
 #' @param meta      Selected metadata from Seurat object over which to calculate averages
 #'
 #' @return Matrix of average values 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/signed_set_scoring.R
 \name{signed_set_scoring}
 \alias{signed_set_scoring}
-\title{Scores cell expression of genes in set}
+\title{Scores cell expression of genes in set taking into account sign of fold change}
 \usage{
 signed_set_scoring(
   ser,
@@ -27,10 +27,7 @@ signed_set_scoring(
 Outputs a vector of score values named as cell names
 }
 \description{
-Takes in a gene set and uses normalized gene expression data to calculate a score describing extent to which
+Takes in a gene set and uses normalized scaled gene expression data to calculate a score describing extent to which
 cells are expressing genes in the set. Seurat object must contain scale_data assay. Gene set must be organized
 such that "genes" are genes and "FC" is (log)foldchange. All genes will be assumed to be significant.
-}
-\details{
-Parameters:
 }

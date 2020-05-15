@@ -2,14 +2,12 @@
 #'
 #' Trains a singleCellNet classifier and then predicts classification of query data
 #' 
-#' Parameters:
 #' @param query     The data which will be classified by the random forest classifier
 #' @param stRef     Reference sample data. Needs to have a column named "cell" with cell names and one 
 #'                  named "newAnn" with annotations/desired clasifications. 
 #' @param expRef    Reference experiment data. Should contain genes as row names, cell names as column
 #'                  names and contain gene expression levels in the matrix
 #'
-#' @import          singleCellNet
 #' @return          Returns a list with the trained classifier, predictions for the queried data, 
 #'                  and assessment information from classifier training.
 #' @export

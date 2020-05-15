@@ -2,13 +2,14 @@
 % Please edit documentation in R/average_scores.R
 \name{average_scores}
 \alias{average_scores}
-\title{Averages values from a matrix based on selected metadata from Seurat object.
-Matrix input should be output from organize_scores.}
+\title{Average matrix by metadata}
 \usage{
-average_scores(scores, meta)
+average_scores(scores, ser, meta)
 }
 \arguments{
 \item{scores}{Matrix of scores organized by metadata (output from organize_scores)}
+
+\item{ser}{Seurat object containing metadata and cell names}
 
 \item{meta}{Selected metadata from Seurat object over which to calculate averages}
 }
@@ -17,5 +18,4 @@ Matrix of average values
 }
 \description{
 Averages values from a matrix based on selected metadata from Seurat object.
-Matrix input should be output from organize_scores.
 }
