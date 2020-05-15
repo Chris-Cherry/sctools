@@ -7,7 +7,8 @@
 #' @return Matrix of average values 
 #' @export
 
-average_scores <- function(scores, meta){
+average_scores <- function(scores, ser, meta){
+  names(meta) = colnames(ser@assays$RNA@counts)
   org_ave = matrix(rep(NA, 
     length(rownames(scores))*length(levels(meta))), 
     nrow = length(levels(meta)))
