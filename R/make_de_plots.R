@@ -9,6 +9,7 @@
 #' @param feature_plots Whether or not to include feature plots in the pdf output.
 #' @param meta          subset that you want to graph
 #' @importFrom dplyr %>%
+#' @importFrom dplyr group_by
 #' @importFrom grDevices png
 #' @importFrom grDevices dev.off
 #' @return Creates plots in user inputted directory
