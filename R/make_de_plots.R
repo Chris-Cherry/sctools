@@ -10,6 +10,7 @@
 #' @param meta          subset that you want to graph
 #' @importFrom dplyr %>%
 #' @importFrom dplyr group_by
+#' @importFrom dplyr top_n
 #' @importFrom grDevices png
 #' @importFrom grDevices dev.off
 #' @return Creates plots in user inputted directory
@@ -47,7 +48,7 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
             dev.off()
 
             smallest = min(table(Idents(list_ser[[i]])))
-            subser = Seurat::subset(list_ser[[i]], downsample = smallest*3)
+            subser = subset(list_ser[[i]], downsample = smallest*3)
 
             png(paste0(out_dir, '/heatmap_trim_cell_', i, '.png'), height = 2000, width = 2000)
             print(Seurat::DoHeatmap(subser, top_all$gene, assay = 'RNA', raster = FALSE, 
@@ -89,8 +90,8 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
             draw.lines = FALSE))
         dev.off()
 
-        smallest = min(table(Idents(ser)))
-        subser = Seurat::subset(ser, downsample = smallest*3)
+        smallest = min(table(Seurat::Idents(ser)))
+        subser = subset(ser, downsample = smallest*3)
 
         png(paste0(out_dir, '/heatmap_trim_cell.png'), height = 2000, width = 2000)
         print(Seurat::DoHeatmap(subser, top_all$gene, assay = 'RNA', raster = FALSE, 
