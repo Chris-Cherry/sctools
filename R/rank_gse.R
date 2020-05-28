@@ -36,8 +36,12 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
         fgsea_pathway = fgsea::gmtPathways(directory)
         for (i in 1:length(fgsea_pathway)){
             # Convert genes
+            if (from_gene != to_gene){
             tmp = convert_genes(fgsea_pathway[[i]], from = from_gene, to = to_gene)
             tmp = tmp[,2]
+            } else {
+                tmp = fgsea_pathway[[i]]
+            }
             # Remove empty gene
             tmp = tmp[tmp != ""]
             # Find all the unique gene
