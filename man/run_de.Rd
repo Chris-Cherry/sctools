@@ -4,7 +4,14 @@
 \alias{run_de}
 \title{Runs differential expression for a ser object}
 \usage{
-run_de(ser, feats = NULL, out_dir = "2_de/", meta = NULL, origin = "Condition")
+run_de(
+  ser,
+  feats = NULL,
+  out_dir = "2_de/",
+  meta = NULL,
+  origin = "Condition",
+  verbose = F
+)
 }
 \arguments{
 \item{ser}{The Seurat object to use}
@@ -17,6 +24,8 @@ If NULL then will run on all genes}
 \item{meta}{(Optional) Pass in cluster name that user wants to run DE}
 
 \item{origin}{(Optional) Pass in what parameters in the each clusters that user wants to run DE}
+
+\item{verbose}{Boolean flag for verbose output}
 }
 \value{
 Output a processed differential expression for plotting

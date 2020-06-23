@@ -8,6 +8,7 @@
 #' @param out_dir       Directory to write plots and save markers.
 #' @param meta          (Optional) Pass in cluster name that user wants to run DE
 #' @param origin        (Optional) Pass in what parameters in the each clusters that user wants to run DE
+#' @param verbose          Boolean flag for verbose output
 #' @import grDevices
 #' @import Seurat
 #' @importFrom utils write.table
@@ -15,7 +16,7 @@
 #' @return              Output a processed differential expression for plotting
 #' @export
 
-run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = 'Condition'){
+run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = 'Condition', verbose = F){
     dir.create(out_dir)
     out_tmp = out_dir
 
@@ -32,7 +33,7 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = '
             out_dir = paste0(out_dir, '/cluster_', clust, '/')
             dir.create(out_dir)
             sub_marks = FindAllMarkers(subser, features = feats, logfc.thresh = 0,
-                return.thresh = Inf, assay = 'RNA', verbose = FALSE)
+                return.thresh = Inf, assay = 'RNA', verbose = verbose)
             saveRDS(sub_marks, paste0(out_dir, 'submarks_', clust,'.RDS'))
             ser_list[[clust]] <- subser
             j = j + 1
@@ -48,7 +49,7 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = '
 
     else{
         marks = FindAllMarkers(ser, features = feats, logfc.thresh = 0, 
-            return.thresh = Inf, assay = 'RNA', verbose = FALSE)
+            return.thresh = Inf, assay = 'RNA', verbose = verbose)
         saveRDS(marks, paste0(out_dir, '/marks.RDS'))
 
         for(clust in levels(Idents(ser))){
