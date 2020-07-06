@@ -14,6 +14,10 @@ organize_scores <- function(scores, ser, meta){
   org = meta
   names(org) = colnames(ser@assays$RNA@counts)
   org = sort(org)
-  org_score = scores[,match(names(org), colnames(scores))]
+  if (is.null(nrow(scores))){
+    org_score = scores[match(names(org), names(scores))]
+  } else {
+    org_score = scores[,match(names(org), colnames(scores))]
+  }
   return(org_score)
 }

@@ -21,7 +21,9 @@ run_de <- function(ser, feats = NULL, out_dir = '2_de/', meta = NULL, origin = '
     out_tmp = out_dir
 
     # Run DE on whole dataset based on the meta data
-    if(is.null(feats)){feats = rownames(ser)}
+    if(is.null(feats)){
+        DefaultAssay(ser) = "RNA"
+        feats = rownames(ser)}
     ser_list = list()
     j = 1
     # Run DE on each cluster
