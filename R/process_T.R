@@ -1,16 +1,12 @@
 #' Processes_T: This function integrate T cell data with alpha and beta vdj sequence into the seurat object
-#' Parameters:
 #' 
 #' @param ser           Seurat object to process
 #' @param T_dir           Optional directory to T cell TCR
 #' 
 #' 
 #' @import Seurat
-#' @import Matrix
-#' @import methods
-#' @import plyr
-#' @import utils
-#' @import data.table
+#' @importFrom utils read.table
+#' @importFrom data.table as.data.table
 #' @return Outputs a Seurat with T cell integration
 #' 
 

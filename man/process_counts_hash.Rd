@@ -2,9 +2,7 @@
 % Please edit documentation in R/process_counts_hash.R
 \name{process_counts_hash}
 \alias{process_counts_hash}
-\title{Processes counts into a Seurat object prepared for alignment. 
-This file also seperated.Adds hashing information to a Seurat object and adds hash id to barcodes.
-Parameters:}
+\title{Processes counts into a Seurat object prepared for alignment.}
 \usage{
 process_counts_hash(
   directory,
@@ -39,16 +37,13 @@ or cell ranger}
 
 \item{B_dir}{optional directory to B cell BCR}
 
-\item{umi_thresh}{Minimum total umi count for cells
-
-This script reads in a counts file from either the DropSeq or 10x 
-pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object}
+\item{umi_thresh}{Minimum total umi count for cells}
 }
 \value{
 Outputs a Seurat file prepared to rPCA anchoring
 }
 \description{
-Processes counts into a Seurat object prepared for alignment. 
-This file also seperated.Adds hashing information to a Seurat object and adds hash id to barcodes.
-Parameters:
+This script reads in a counts file from either the DropSeq or 10x 
+pipeline, converts the genes to a given naming convention (MGI or HGNC) and creates Seurat object from counts.
+It is the input for align_sers. This file also adds hashing information to a Seurat object and adds hash id to barcodes.
 }

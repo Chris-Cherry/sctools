@@ -1,15 +1,15 @@
-#' Scores cell expression of genes in set
+#' Scores cell expression of genes in set taking into account sign of fold change
 #'
-#' Takes in a gene set and uses normalized gene expression data to calculate a score describing extent to which
+#' Takes in a gene set and uses normalized scaled gene expression data to calculate a score describing extent to which
 #' cells are expressing genes in the set. Seurat object must contain scale_data assay. Gene set must be organized
 #' such that "genes" are genes and "FC" is (log)foldchange. All genes will be assumed to be significant.
 #'
-#' Parameters:
 #' @param geneset   A list of genes and their fold changes. 
 #' @param ser       A Seurat object to be scored by the gene set. Must contain scaled data
 #' @param from_gene Original gene type
 #' @param to_gene   Gene type for conversion
 #' @param scaled    Boolean to determine whether to scale score by the number of genes in the set
+#' @importFrom stats na.omit
 #' @return          Outputs a vector of score values named as cell names
 #' @export
 

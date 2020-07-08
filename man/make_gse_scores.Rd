@@ -21,12 +21,7 @@ make_gse_scores(
 
 \item{from_gene}{"ENSG" or "ENSMUSG" or "HGNC" or "MGI"}
 
-\item{to_gene}{"MGI" or "HGNC"
-
-This function will read in the gene sets from an existing list, gmt file, 
-or csv file and score cells based on scaled gene expression. The results 
-will be appended to the set_scores assay in the provided Seurat object or 
-the assay will be created.}
+\item{to_gene}{"MGI" or "HGNC"}
 
 \item{gene_sets}{User defined subset of gene set (Optional)}
 
@@ -38,5 +33,8 @@ the assay will be created.}
 Outputs seurat object
 }
 \description{
-Makes gene set enrichment scores by cell
+This function will read in the gene sets from an existing list, gmt file, 
+or csv file and score cells based on scaled gene expression. The results 
+will be appended to the set_scores assay in the provided Seurat object or 
+the assay will be created.
 }

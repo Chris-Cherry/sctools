@@ -16,8 +16,9 @@
 #' @param scale_vars    Other features to use for scaling. 
 #'
 #' @import Seurat
-#' @import phateR
-#' @import Matrix
+#' @importFrom phateR phate
+#' @importFrom Matrix rowSums
+#' @importFrom Matrix colSums
 #' @return Outputs a processed Seurat outputs (UMAP, Phate) 
 #' @export
 

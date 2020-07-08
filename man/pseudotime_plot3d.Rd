@@ -2,7 +2,7 @@
 % Please edit documentation in R/pseudotime_plot3d.R
 \name{pseudotime_plot3d}
 \alias{pseudotime_plot3d}
-\title{Parameters:}
+\title{Generate flashing and spinning 3d pseudotime plots}
 \usage{
 pseudotime_plot3d(
   ser,
@@ -29,6 +29,9 @@ pseudotime_plot3d(
 
 \item{frame}{Number of frames}
 }
+\value{
+Makes png files that can be assembled into 3d moving plots
+}
 \description{
-Parameters:
+Generate flashing and spinning 3d pseudotime plots
 }

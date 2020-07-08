@@ -1,17 +1,13 @@
-#' Processes_T: This function integrate B cell data with alpha and beta vdj sequence into the seurat object
-#' Parameters:
+#' This function integrates B cell data vdj sequence into the seurat object
 #' 
 #' @param ser         Seurat object to process
-#' @param B_dir         Optional directory to B cell TCR
-#' 
+#' @param B_dir         Optional directory to B cell BCR
 #' 
 #' @import Seurat
-#' @import Matrix
-#' @import methods
-#' @import plyr
-#' @import utils
-#' @import data.table
-#' @return Outputs a Seurat with T cell integration
+#' @importFrom utils read.table
+#' @importFrom data.table as.data.table
+#' @importFrom data.table data.table
+#' @return Outputs a Seurat with B cell integration
 #' 
 
 process_B <- function(ser, B_dir){
@@ -81,7 +77,7 @@ process_B <- function(ser, B_dir){
     }
     colnames(B_ref) = colnames(Bcell_mx)
     rownames(B_ref) = colnames(ser@assays$RNA@counts)
-    ser = AddMetaData(ser, B_ref)
+    ser = Seurat::AddMetaData(ser, B_ref)
 
     return(ser)
 }

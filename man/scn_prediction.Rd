@@ -22,6 +22,3 @@ Returns a list with the trained classifier, predictions for the queried data,
 \description{
 Trains a singleCellNet classifier and then predicts classification of query data
 }
-\details{
-Parameters:
-}

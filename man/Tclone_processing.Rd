@@ -7,11 +7,12 @@
 Tclone_processing(ser)
 }
 \arguments{
-\item{ser}{Seurat object containing T cell information
-
-This script reads in a counts file from either the DropSeq or 10x 
-pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object}
+\item{ser}{Seurat object containing T cell information}
+}
+\value{
+Feature plots highlighting clones
 }
 \description{
-Parameters:
+This script reads in a counts file from either the DropSeq or 10x 
+pipeline, converts the genes to a given naming convention (MGI or HGNC) and return a Seurat object
 }

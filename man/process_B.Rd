@@ -2,20 +2,18 @@
 % Please edit documentation in R/process_B.R
 \name{process_B}
 \alias{process_B}
-\title{Processes_T: This function integrate B cell data with alpha and beta vdj sequence into the seurat object
-Parameters:}
+\title{This function integrates B cell data vdj sequence into the seurat object}
 \usage{
 process_B(ser, B_dir)
 }
 \arguments{
 \item{ser}{Seurat object to process}
 
-\item{B_dir}{Optional directory to B cell TCR}
+\item{B_dir}{Optional directory to B cell BCR}
 }
 \value{
-Outputs a Seurat with T cell integration
+Outputs a Seurat with B cell integration
 }
 \description{
-Processes_T: This function integrate B cell data with alpha and beta vdj sequence into the seurat object
-Parameters:
+This function integrates B cell data vdj sequence into the seurat object
 }

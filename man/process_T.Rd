@@ -2,8 +2,7 @@
 % Please edit documentation in R/process_T.R
 \name{process_T}
 \alias{process_T}
-\title{Processes_T: This function integrate T cell data with alpha and beta vdj sequence into the seurat object
-Parameters:}
+\title{Processes_T: This function integrate T cell data with alpha and beta vdj sequence into the seurat object}
 \usage{
 process_T(ser, T_dir)
 }
@@ -17,5 +16,4 @@ Outputs a Seurat with T cell integration
 }
 \description{
 Processes_T: This function integrate T cell data with alpha and beta vdj sequence into the seurat object
-Parameters:
 }

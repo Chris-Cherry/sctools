@@ -1,17 +1,16 @@
 #' Processes counts into a Seurat object prepared for alignment based on reference object.
-#' Parameters:
-#' @param ser           Seurat object to process.
-#' @param res           Resolution for clustering
-#' @param ref_ser       A processed reference Seurat object used to obtain metadata
-#'                      for scaling and cell selection.
 #'
 #' Reads in a blank ser object (usually from align_sers.R) and processes
 #' with a traditional Seurat pipeline. All scaling will be performed using
 #' metadata from the reference Seurat object
 #' 
+#' @param ser           Seurat object to process.
+#' @param res           Resolution for clustering
+#' @param ref_ser       A processed reference Seurat object used to obtain metadata
+#'                      for scaling and cell selection.
 #' @import  Seurat
-#' @import  Matrix
-#' @import  phateR
+#' @importFrom Matrix rowSums
+#' @importFrom  phateR phate
 #' @return  Outputs a processed Seurat outputs (PCA, UMAP, Phate) 
 #' @export
 

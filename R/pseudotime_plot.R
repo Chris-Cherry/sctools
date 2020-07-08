@@ -8,9 +8,7 @@
 #' @param reduction     Reduction method
 #' @param lineage_ls    User customized list of cluster that want to be perform slingshot on 
 #' @import Seurat
-#' @import dplyr 
 #' @import slingshot
-#' @import tidyr
 #' @import RColorBrewer
 #' 
 #' @export

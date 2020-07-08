@@ -1,4 +1,4 @@
-#' Parameters:
+#' Generate flashing and spinning 3d pseudotime plots
 #' 
 #' @param ser               Seurat object to process
 #' @param curve_dir         Input curve directory
@@ -9,7 +9,8 @@
 #' @param subset            A subset of clusters that user want to see
 #' @import Seurat 
 #' @import rgl
-#' 
+#' @importFrom grDevices hcl
+#' @return Makes png files that can be assembled into 3d moving plots
 #' @export
 
 pseudotime_plot3d <- function(ser, curve_dir, pseudotime_dir, subset = NULL, out_dir = '5_pseudotime_3d', bg_color = 'white', frame = 500){

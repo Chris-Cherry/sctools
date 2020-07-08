@@ -2,8 +2,7 @@
 % Please edit documentation in R/organize_scores.R
 \name{organize_scores}
 \alias{organize_scores}
-\title{Organizes matrix of values associated with cells in a Seurat object 
-by specified metadata}
+\title{Sort matrix by Seurat metadata}
 \usage{
 organize_scores(scores, ser, meta)
 }

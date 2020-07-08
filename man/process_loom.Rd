@@ -20,5 +20,6 @@ Outputs a list of loom files from RNA velocity prepared for rnavel_plot.R or con
 The function reads in loom files from align_rnavel.sh and formats the cell
 names to match the naming convention of process_ser.R. The input files must
 have the 'sample.loom' where sample is the correct sample name to append to
-the cell barcode.
+the cell barcode. Note that cells in the Seurat object must be named in the format
+barcode_sample.
 }
