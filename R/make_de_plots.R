@@ -31,9 +31,9 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
             out_dir = paste0(out_dir, '/cluster_', i, '/')
             submarks = readRDS(paste0(out_dir, '/submarks_', i, '.RDS'))
             top10 = submarks %>% group_by(cluster) %>% top_n(10, avg_logFC)
-            if (any(submarks$avg_logFC > 1) == TRUE)
+            if (any(submarks$avg_logFC > 1) == TRUE){
                 top_all = submarks[which(submarks$avg_logFC > 1),]
-            else {
+            } else {
                 top_all = top10
             }
             
@@ -61,16 +61,18 @@ make_de_plots <- function(ser = NULL, list_ser = NULL, feats = NULL, out_dir = '
             dev.off()
             
             pdf(paste0(out_dir, '/clust_vlns_cluster_', i, '.pdf'), height = 20, width = 20)
-            
             for(clust in levels(Seurat::Idents(list_ser[[i]]))){
                 top = top10$gene[which(top10$cluster == clust)]
-                print(Seurat::VlnPlot(list_ser[[i]], cols = cols, pt.size = 0, features = top, ncol = 3, 
-                    assay = 'RNA'))
-                if(feature_plots){
-                print(Seurat::FeaturePlot(list_ser[[i]], features = top, ncol = 3))
-                print(Seurat::FeaturePlot(list_ser[[i]], features = top, ncol = 3, min.cutoff = 'q10', max.cutoff = 'q90'))
+                if (!identical(top, character(0))){
+                    print(Seurat::VlnPlot(list_ser[[i]], cols = cols, pt.size = 0, features = top, ncol = 3, 
+                        assay = 'RNA'))
+                    if(feature_plots){
+                    print(Seurat::FeaturePlot(list_ser[[i]], features = top, ncol = 3))
+                    print(Seurat::FeaturePlot(list_ser[[i]], features = top, ncol = 3, min.cutoff = 'q10', max.cutoff = 'q90'))
+                    }
                 }
             }
+            dev.off()
         }
     }
     else if(!is.null(ser)){
