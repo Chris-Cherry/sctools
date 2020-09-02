@@ -8,7 +8,9 @@
 #'
 #' @param ser           Seurat object to process.
 #' @param out_dir       Output directory
-#' @param colors        Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of colors named with the levels of the metadata. The colors object is a named list of these named vectors. The name of the scheme must match the metadata name in the seurat object.
+#' @param colors        Optional color schemes for metadata. Each scheme (for a given metadata) must be a vector of 
+#'                      colors named with the levels of the metadata. The colors object is a named list of these named vectors. 
+#'                      The name of the scheme must match the metadata name in the seurat object.
 #' @param use_phate     Boolean indicating whether to use phate dimensional reduction for plots.  
 #' @param cluster_enrichment_pvals  Boolean indicating whether to calculate P values for clusters by metadata.
 #' @return Makes plots in user inputed directory
