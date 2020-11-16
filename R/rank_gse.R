@@ -24,10 +24,10 @@ rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene
         gse_sub = gse_rank[which(gse_rank$cluster == cluster_name),]
 
         if (rank_by == 'Pvalue'){
-            rank = gse_sub$p_value
+            rank = gse_sub$p_val_adj
         }
         else if(rank_by == 'sign_Pvalue'){
-            rank = gse_sub$p_value * gse_sub$avg_logFC
+            rank = gse_sub$p_val_adj * gse_sub$avg_logFC
         }
         else{
             rank = gse_sub$avg_logFC
