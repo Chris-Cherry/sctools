@@ -2,18 +2,17 @@
 #' 
 #' @param directory     Directory to get gmt file
 #' @param rank_data     This can be a Directory to get RDS file or directly passing in dataframe
-#' @param out_dir       Output directory
 #' @param rank_by       User defined data ranking by logFC, Pvalue, or sign_Pvalue (Default setting at logFC)
 #' @param from_gene     "ENSG" or "ENSMUSG" or "HGNC" or "MGI"             
 #' @param cluster_name  Cluster name that user want to do the geneset analysis on
 #' @param to_gene       "MGI" or HGNC
-#' 
+#' @param nperm         Number of permutations for fgsea
 #' 
 #' @return  Outputs dataframe from fgsea function
 #' @export
 
-rank_gse <- function(directory, rank_data, out_dir = '3_gse', from_gene, to_gene, 
-    cluster_name, rank_by = 'logFC'){
+rank_gse <- function(directory, rank_data, from_gene, to_gene, 
+    cluster_name, rank_by = 'logFC', nperm = 10000){
 
     if (typeof(rank_data) == 'character' || typeof(rank_data) == 'list'){
         

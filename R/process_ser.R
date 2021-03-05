@@ -7,6 +7,7 @@
 #' @param ser           Seurat object to process.
 #' @param mt_handle     Regex used to identify mitochondrial genes for scaling. If left blank mt gene percent will not be used to scale.
 #' @param mt_thresh     Max percent of umis from mitochondrial genes for cells to be used. If mt_handle isn't used this won't have any functionality.
+#' @param feat_thresh   Proportion of cells a gene must be expressed in to be included
 #' @param scale_umi     Whether or not to scale on total UMI count.
 #' @param g2m_genes     Genes to use for g2m scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
 #' @param s_genes       Genes to use for s scoring and scaling. If left blank cell cycle scoring and scaling will not be done.
@@ -22,14 +23,14 @@
 #' @return Outputs a processed Seurat outputs (UMAP, Phate) 
 #' @export
 
-process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, scale_umi = TRUE, 
+process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, feat_thresh = 0.001, scale_umi = TRUE, 
     g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL, ref_ser = NULL,
     scale_vars = NULL){
 
     ser = Seurat::UpdateSeuratObject(ser)
 
     feat_sums = Matrix::rowSums(Seurat::GetAssayData(ser, slot = 'counts', assay = 'RNA') != 0)
-    feat_keep = names(feat_sums)[which(feat_sums > ncol(ser)*.001)]
+    feat_keep = names(feat_sums)[which(feat_sums > ncol(ser)*feat_thresh)]
     ser = subset(ser, features = feat_keep)
     
     if(!is.null(ref_ser)){
