@@ -13,7 +13,7 @@
 #' @export
 
 
-convert_genes <- function(genes, from, to, mirror = "www.ensembl.org"){
+convert_genes <- function(genes, from, to, mirror = "http://useast.ensembl.org/"){
     if (from == 'ENSMUSG'){
         srcMart = biomaRt::useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = mirror)
         sourceAtts =  'ensembl_gene_id'   

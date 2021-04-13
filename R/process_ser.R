@@ -15,6 +15,8 @@
 #' @param other_sets    A named list of gene sets to be used similar to percent mt for scoring and scaling. Names will appear in metadata.
 #' @param ref_ser       A processed reference Seurat object used to as reference for cell selection.
 #' @param scale_vars    Other features to use for scaling. 
+#' @param phate         Boolean for whether to create phate embeddings
+#' @param verbose       Boolean for whether to run verbose versions of functions
 #'
 #' @import Seurat
 #' @importFrom phateR phate
@@ -25,7 +27,7 @@
 
 process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, feat_thresh = 0.001, scale_umi = TRUE, 
     g2m_genes = NULL, s_genes = NULL, res = .8, other_sets = NULL, ref_ser = NULL,
-    scale_vars = NULL){
+    scale_vars = NULL, phate = FALSE, verbose = FALSE){
 
     ser = Seurat::UpdateSeuratObject(ser)
 
@@ -60,25 +62,28 @@ process_ser <- function(ser, mt_handle = NULL, mt_thresh = .1, feat_thresh = 0.0
     
     if(Seurat::DefaultAssay(ser) != 'RNA'){
         ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, assay = 'RNA', 
-            verbose = FALSE, features = rownames(ser@assays$RNA@data))
+            verbose = verbose, features = rownames(ser@assays$RNA@data))
     }
-    ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, verbose = FALSE, features = rownames(ser))
-    ser = Seurat::FindVariableFeatures(ser, verbose = FALSE)
-    ser = Seurat::RunPCA(ser, npcs =50,verbose = FALSE)
-    ser = Seurat::FindNeighbors(ser, reduction = "pca", verbose = FALSE)
-    ser = Seurat::FindClusters(ser, resolution = res, verbose = FALSE)
-    ser = Seurat::RunUMAP(ser, reduction = "pca", dims = 1:50, verbose = FALSE)
-    phate = phateR::phate(ser@reductions$pca@cell.embeddings, seed = 42, n.jobs = -1, 
-        verbose = FALSE)
+    ser = Seurat::ScaleData(ser, vars.to.regress = scale_vars, verbose = verbose, features = rownames(ser))
+    ser = Seurat::FindVariableFeatures(ser, verbose = verbose)
+    ser = Seurat::RunPCA(ser, npcs =50,verbose = verbose)
+    ser = Seurat::FindNeighbors(ser, reduction = "pca", verbose = verbose)
+    ser = Seurat::FindClusters(ser, resolution = res, verbose = verbose)
+    ser = Seurat::RunUMAP(ser, reduction = "pca", dims = 1:50, verbose = verbose)
+    
+    if (phate){
+        phate = phateR::phate(ser@reductions$pca@cell.embeddings, seed = 42, n.jobs = -1, 
+            verbose = verbose)
 
-    ser[['phate']] = Seurat::CreateDimReducObject(100*phate$embedding, key = 'PHATE_',
-        assay = DefaultAssay(ser))
+        ser[['phate']] = Seurat::CreateDimReducObject(100*phate$embedding, key = 'PHATE_',
+            assay = DefaultAssay(ser))
 
-    # Generate 3d phate    
-    phate3d = phateR::phate(ser@reductions$pca@cell.embeddings, ndim = 3, seed = 42, n.jobs = -1, 
-        verbose = FALSE)
-    ser[['phate3d']] = Seurat::CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
-        assay = DefaultAssay(ser))
+        # Generate 3d phate    
+        phate3d = phateR::phate(ser@reductions$pca@cell.embeddings, ndim = 3, seed = 42, n.jobs = -1, 
+            verbose = verbose)
+        ser[['phate3d']] = Seurat::CreateDimReducObject(phate3d$embedding, key = 'PHATE3D_',
+            assay = DefaultAssay(ser))
+    }
 
     return(ser)
 }
