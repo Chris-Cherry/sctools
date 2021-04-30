@@ -26,14 +26,15 @@ signed_set_scoring <- function(ser, geneset, from_gene = "MGI", to_gene = "MGI",
     # Calculate summed z-scores, taking into account directionality of fold change
     pos = geneset$genes[which(geneset$FC>0)]
     neg = geneset$genes[which(geneset$FC<0)]
-    pos_ind = match(pos, rownames(ser@assays$RNA@scale.data))
+    scale_dat = GetAssayData(object = ser, slot = "scale.data")
+    pos_ind = match(pos, rownames(scale_dat))
     if (!identical(which(is.na(pos_ind)), integer(0))){
         pos_ind = pos_ind[-which(is.na(pos_ind))]}
-    pos_gene_subset = ser@assays$RNA@scale.data[pos_ind,]
-    neg_ind = match(neg, rownames(ser@assays$RNA@scale.data))
+    pos_gene_subset = scale_dat[pos_ind,]
+    neg_ind = match(neg, rownames(scale_dat))
     if (!identical(which(is.na(neg_ind)), integer(0))){
         neg_ind = neg_ind[-which(is.na(neg_ind))]}
-    neg_gene_subset = ser@assays$RNA@scale.data[neg_ind,]
+    neg_gene_subset = scale_dat[neg_ind,]
     if (is.null(dim(neg_gene_subset))){
         neg_score = neg_gene_subset * -1
     } else {
